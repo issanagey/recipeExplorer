@@ -45,6 +45,6 @@
         android:text="@string/createAcc"
         android:textColor="#0000EE"
         android:clickable="true"
-        android:onClick="CreateAccButtonClick" />
+        android:onClick="CreateAccount" />
 
 </LinearLayout>
