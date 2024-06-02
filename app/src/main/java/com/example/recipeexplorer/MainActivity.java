@@ -15,6 +15,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // go to login page when starting app
+        Login(null);
+
+    }
+
+    // Login page
+    public void Login(View view){
         setContentView(R.layout.login);
 
         // input references
@@ -38,26 +44,14 @@ public class MainActivity extends AppCompatActivity {
                 DatabaseManager dbm = new DatabaseManager(getApplicationContext());
 
                 // login successful
-                if (dbm.LoginVerification(name, pw)) {
-                    Snackbar.make(v, "Login successful", Snackbar.LENGTH_SHORT).show();
+                if (dbm.LoginVerification(name,pw)) {
                     setContentView(R.layout.activity_main);
                 }
                 else{
-                    Snackbar.make(v, "Login Failed", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(v, "Account does not exist or Password mismatched", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
-
-    }
-
-    // Create new account (login)
-    public void CreateAccButtonClick(View view) {
-        setContentView(R.layout.create_account);
-    }
-
-    // Redirect to login page (from create account page)
-    public void RedirectToLogin(View view){
-        setContentView(R.layout.login);
     }
 
 }
