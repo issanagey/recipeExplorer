@@ -31,27 +31,27 @@
         android:hint="Password                                  " />
 
     <EditText
-        android:id="@+id/ConfirmPwInput"
+        android:id="@+id/confirmPwInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:hint="Confirm Password                   " />
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/createAccBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:text="Create Account !" />
 
     <TextView
-        android:id="@+id/createAccBtn"
+        android:id="@+id/loginBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/createAcc"
         android:textColor="#0000EE"
         android:clickable="true"
-        android:onClick="RedirectToLogin" />
+        android:onClick="Login" />
 
 </LinearLayout>
