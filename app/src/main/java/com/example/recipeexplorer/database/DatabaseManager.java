@@ -62,5 +62,42 @@ public class DatabaseManager {
         cursor.close();
     }
 
+    public boolean LoginVerification(String name, String password){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                "name",
+                "password",
+        };
+
+        Cursor cursor = db.query(
+                "users",
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        while (cursor.moveToNext()) {
+
+            // get username & pw
+            String userName = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+            String userPassword = cursor.getString(cursor.getColumnIndexOrThrow("password"));
+
+            // check if username & pw match
+            if(userName.equals(name) && userPassword.equals(password)){
+                cursor.close();
+                return true;
+            }
+        }
+
+        // no matches found
+        cursor.close();
+        return false;
+    }
+
+
     // Add for recipes, challenges, and achievements tables as needed.
 }
