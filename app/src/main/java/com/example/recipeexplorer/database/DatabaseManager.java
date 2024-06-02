@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.google.android.material.snackbar.Snackbar;
+
 public class DatabaseManager {
     private DatabaseHelper dbHelper;
 
@@ -62,6 +64,8 @@ public class DatabaseManager {
         cursor.close();
     }
 
+    // login verification
+    // returns true if name and pw match
     public boolean LoginVerification(String name, String password){
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -98,6 +102,41 @@ public class DatabaseManager {
         return false;
     }
 
+    // create account verification
+    // returns true if account does not exist
+    public boolean CreateAccountVerification(String name){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                "name"
+        };
+
+        Cursor cursor = db.query(
+                "users",
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        while (cursor.moveToNext()) {
+
+            // get username
+            String userName = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+
+            // check if username already exists
+            if(userName.equals(name)){
+                cursor.close();
+                return false;
+            }
+        }
+
+        // no matches found
+        cursor.close();
+        return true;
+    }
 
     // Add for recipes, challenges, and achievements tables as needed.
 }
