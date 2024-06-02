@@ -50,5 +50,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Create new account (login)
+    public void CreateAccButtonClick(View view) {
+        setContentView(R.layout.create_account);
+    }
+
+    // Redirect to login page (from create account page)
+    public void RedirectToLogin(View view){
+        setContentView(R.layout.login);
+    }
 
 }

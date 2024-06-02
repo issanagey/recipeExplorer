@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-100dp"
-        android:text="Login"
+        android:text="Create Account"
         android:textSize="34sp"
         android:textStyle="bold" />
 
@@ -30,12 +30,19 @@
         android:inputType="textPassword"
         android:hint="Password                                  " />
 
+    <EditText
+        android:id="@+id/ConfirmPwInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="Confirm Password                   " />
+
     <Button
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="Login !" />
+        android:text="Create Account !" />
 
     <TextView
         android:id="@+id/createAccBtn"
@@ -45,6 +52,6 @@
         android:text="@string/createAcc"
         android:textColor="#0000EE"
         android:clickable="true"
-        android:onClick="CreateAccButtonClick" />
+        android:onClick="RedirectToLogin" />
 
 </LinearLayout>
