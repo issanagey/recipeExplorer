@@ -1,14 +1,13 @@
 package com.example.recipeexplorer;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.recipeexplorer.database.DatabaseManager;
 import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,11 +30,15 @@ public class MainActivity extends AppCompatActivity {
             // verify login
             public void onClick(View v) {
 
+                // get name and pw
                 String name = nameInputEditText.getText().toString();
                 String pw = pwInputEditText.getText().toString();
 
+                // create DatabaseManager object (has all the function we need inside)
+                DatabaseManager dbm = new DatabaseManager(getApplicationContext());
+
                 // login successful
-                if (name.equals("admin") && pw.equals("admin")) {
+                if (dbm.LoginVerification(name, pw)) {
                     Snackbar.make(v, "Login successful", Snackbar.LENGTH_SHORT).show();
                     setContentView(R.layout.activity_main);
                 }
