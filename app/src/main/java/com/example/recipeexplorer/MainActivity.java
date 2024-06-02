@@ -7,6 +7,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        // go to login page when starting app
+        setContentView(R.layout.login);
     }
 }
