@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,8 +15,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // go to login page when starting app
-        Login(null);
+        DatabaseManager dbm = new DatabaseManager(getApplicationContext());
+
+        // cache login
+        if(dbm.IsLoggedIn()){
+            Main(null);
+        }
+        else{
+            // go to login page when starting app
+            Login(null);
+        }
 
     }
 
@@ -46,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
                 // login successful
                 if (dbm.LoginVerification(name,pw)) {
                     setContentView(R.layout.activity_main);
+                    TextView textView = findViewById(R.id.user_name);
+                    textView.setText("Welcome " + dbm.GetUsername(dbm.GetCurrentUserID()));
                 }
                 else{
                     Snackbar.make(v, "Account does not exist or Password mismatched", Snackbar.LENGTH_SHORT).show();
@@ -53,6 +64,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    // Logout user
+    public void Logout(View view) {
+        DatabaseManager dbm = new DatabaseManager(getApplicationContext());
+
+        dbm.LogoutUser();
+
+        Login(null);
+    }
+
 
     // Create Account page
     public void CreateAccount(View view) {
@@ -109,11 +130,11 @@ public class MainActivity extends AppCompatActivity {
                 // name check
                 if (dbm.CreateAccountVerification(name)) {
                     // create account
-                    dbm.addUser(name,"123@gmail.com",pw, "".getBytes());
+                    dbm.addUser(name ,pw, "".getBytes());
                     Snackbar.make(v, "Account Created", Snackbar.LENGTH_SHORT).show();
 
                     // back to login page
-                    setContentView(R.layout.login);
+                    Login(null);
                 }
                 // name already exists
                 else{
@@ -123,4 +144,31 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Main page
+    public void Main(View view) {
+        setContentView(R.layout.activity_main);
+
+        // create DatabaseManager object (has all the function we need inside)
+        DatabaseManager dbm = new DatabaseManager(getApplicationContext());
+
+        // set text (text view)
+        TextView textView = findViewById(R.id.user_name);
+        textView.setText("Welcome " + dbm.GetUsername(dbm.GetCurrentUserID()));
+
+        // get profile button reference
+        Button button = (Button) findViewById(R.id.profileButton);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Profile(null);
+
+            }
+        });
+    }
+
+    // Profile page
+    public void Profile(View view) {
+        setContentView(R.layout.profile_placeholder);
+
+    }
 }
