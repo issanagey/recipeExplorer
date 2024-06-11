@@ -2,8 +2,10 @@ package com.example.recipeexplorer.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -37,23 +39,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_LOGIN);
         db.execSQL(CREATE_TABLE_RECIPES);
         db.execSQL(CREATE_TABLE_COOKBOOKS);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older tables if they exist
-        db.execSQL("DROP TABLE IF EXISTS uesrs");
-        db.execSQL("DROP TABLE IF EXISTS login");
-        db.execSQL("DROP TABLE IF EXISTS recipe");
-        db.execSQL("DROP TABLE IF EXISTS cookbook");
-
-        // Create tables again
-        onCreate(db);
 
         // dummy data
         // users
         // admin
-        android.content.ContentValues values = new ContentValues();
+        ContentValues values = new ContentValues();
         values.put("name", "admin");
         values.put("password", "admin");
         values.put("challenge_completed", 0);
@@ -180,4 +170,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("recipe_description", "Ayam Masak Merah Putrajaya is a spicy tomato-based chicken dish from Putrajaya, Malaysia, known for its vibrant red color and bold flavors.");
 
     }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Drop older tables if they exist
+        db.execSQL("DROP TABLE IF EXISTS uesrs");
+        db.execSQL("DROP TABLE IF EXISTS login");
+        db.execSQL("DROP TABLE IF EXISTS recipe");
+        db.execSQL("DROP TABLE IF EXISTS cookbook");
+
+        // Create tables again
+        onCreate(db);
+    }
+
 }
