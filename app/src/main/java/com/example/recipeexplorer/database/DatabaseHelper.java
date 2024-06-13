@@ -2,10 +2,8 @@ package com.example.recipeexplorer.database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -30,7 +28,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Cookbook table create statement
     private static final String CREATE_TABLE_COOKBOOKS = "CREATE TABLE cookbooks (user_id INTEGER PRIMARY KEY, recipe_id INTEGER)";
 
-    public DatabaseHelper(Context context) {super(context, DATABASE_NAME, null, DATABASE_VERSION);}
+    public DatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -174,13 +174,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older tables if they exist
-        db.execSQL("DROP TABLE IF EXISTS uesrs");
+        db.execSQL("DROP TABLE IF EXISTS users");
         db.execSQL("DROP TABLE IF EXISTS login");
-        db.execSQL("DROP TABLE IF EXISTS recipe");
+        db.execSQL("DROP TABLE IF EXISTS recipes");
         db.execSQL("DROP TABLE IF EXISTS cookbook");
 
         // Create tables again
         onCreate(db);
     }
-
 }

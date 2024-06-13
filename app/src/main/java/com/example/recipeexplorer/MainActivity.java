@@ -12,163 +12,104 @@ import com.example.recipeexplorer.database.DatabaseManager;
 import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
+
+    private DatabaseManager dbm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DatabaseManager dbm = new DatabaseManager(getApplicationContext());
+        dbm = new DatabaseManager(getApplicationContext());
 
-        // cache login
-        if(dbm.IsLoggedIn()){
-            Main(null);
+        // Check if a user is already logged in
+        if (dbm.IsLoggedIn()) {
+            // Go to main activity
+            Main();
+        } else {
+            // Go to login page
+            Login();
         }
-        else{
-            // go to login page when starting app
-            Login(null);
-        }
-
     }
 
     // Login page
-    public void Login(View view){
+    public void Login() {
         setContentView(R.layout.login);
 
-        // input references
+        // Input references
         EditText nameInputEditText = findViewById(R.id.nameInput);
         EditText pwInputEditText = findViewById(R.id.pwInput);
 
-        // get button reference
-        Button button = (Button) findViewById(R.id.loginButton);
+        // Get button reference
+        Button button = findViewById(R.id.loginButton);
 
-        // set button on click listener
+        // Set button on click listener
         button.setOnClickListener(new View.OnClickListener() {
-
-            // verify login
             public void onClick(View v) {
-
-                // get name and pw
+                // Get name and password
                 String name = nameInputEditText.getText().toString();
                 String pw = pwInputEditText.getText().toString();
 
-                // create DatabaseManager object (has all the function we need inside)
-                DatabaseManager dbm = new DatabaseManager(getApplicationContext());
-
-                // login successful
-                if (dbm.LoginVerification(name,pw)) {
-                    setContentView(R.layout.activity_main);
-                    TextView textView = findViewById(R.id.user_name);
-                    textView.setText("Welcome " + dbm.GetUsername(dbm.GetCurrentUserID()));
-                }
-                else{
+                // Verify login
+                if (dbm.LoginVerification(name, pw)) {
+                    Main();
+                } else {
                     Snackbar.make(v, "Account does not exist or Password mismatched", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    // Logout user
-    public void Logout(View view) {
-        DatabaseManager dbm = new DatabaseManager(getApplicationContext());
+    // Main activity
+    public void Main() {
+        setContentView(R.layout.activity_main);
 
-        dbm.LogoutUser();
+        // Display the logged-in user's name
+        TextView textView = findViewById(R.id.user_name);
+        textView.setText("Welcome " + dbm.GetUsername(dbm.GetCurrentUserID()));
 
-        Login(null);
+        // Set logout button listener
+        Button logoutButton = findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Logout();
+            }
+        });
     }
 
+    // Logout user
+    public void Logout() {
+        dbm.LogoutUser();
+        Login();
+    }
 
     // Create Account page
     public void CreateAccount(View view) {
         setContentView(R.layout.create_account);
 
-        // input references
+        // Input references
         EditText nameInputEditText = findViewById(R.id.nameInput);
         EditText pwInputEditText = findViewById(R.id.pwInput);
-        EditText confirmPwInputEditText = findViewById(R.id.confirmPwInput);
 
-        // get button reference
-        Button button = (Button) findViewById(R.id.createAccBtn);
+        // Get button reference
+        Button button = findViewById(R.id.createAccBtn);
 
-        // set button on click listener
+        // Set button on click listener
         button.setOnClickListener(new View.OnClickListener() {
-
-            // verify account creation
             public void onClick(View v) {
-
-                // get name, pw, confirm pw
+                // Get name and password
                 String name = nameInputEditText.getText().toString();
                 String pw = pwInputEditText.getText().toString();
-                String confirmPw = confirmPwInputEditText.getText().toString();
 
-                // error checking
-                if (name.isEmpty() || pw.isEmpty() || confirmPw.isEmpty()) {
-                    Snackbar.make(v, "Please fill in all fields", Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!pw.equals(confirmPw)) {
-                    Snackbar.make(v, "Passwords do not match", Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                if (pw.length() < 8) {
-                    Snackbar.make(v, "Password must be at least 8 characters", Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                if (pw.contains(" ")) {
-                    Snackbar.make(v, "Password cannot contain spaces", Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                if (name.contains(" ")) {
-                    Snackbar.make(v, "Name cannot contain spaces", Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                if (name.length() < 3) {
-                    Snackbar.make(v, "Name must be at least 3 characters", Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-
-                // create DatabaseManager object (has all the function we need inside)
-                DatabaseManager dbm = new DatabaseManager(getApplicationContext());
-
-                // name check
+                // Verify if the account can be created
                 if (dbm.CreateAccountVerification(name)) {
-                    // create account
-                    dbm.addUser(name ,pw, "".getBytes());
-                    Snackbar.make(v, "Account Created", Snackbar.LENGTH_SHORT).show();
-
-                    // back to login page
-                    Login(null);
-                }
-                // name already exists
-                else{
-                    Snackbar.make(v, "Name already taken", Snackbar.LENGTH_SHORT).show();
+                    // Add new user to the database
+                    dbm.addUser(name, pw, null); // Assuming no profile picture
+                    Snackbar.make(v, "Account created successfully", Snackbar.LENGTH_SHORT).show();
+                    Login();
+                } else {
+                    Snackbar.make(v, "Account already exists", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
-    }
-
-    // Main page
-    public void Main(View view) {
-        setContentView(R.layout.activity_main);
-
-        // create DatabaseManager object (has all the function we need inside)
-        DatabaseManager dbm = new DatabaseManager(getApplicationContext());
-
-        // set text (text view)
-        TextView textView = findViewById(R.id.user_name);
-        textView.setText("Welcome " + dbm.GetUsername(dbm.GetCurrentUserID()));
-
-        // get profile button reference
-        Button button = (Button) findViewById(R.id.profileButton);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Profile(null);
-
-            }
-        });
-    }
-
-    // Profile page
-    public void Profile(View view) {
-        setContentView(R.layout.profile_placeholder);
-
     }
 }
+
