@@ -69,6 +69,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Create tables again
         onCreate(db);
     }
-
-    //dsdsdsds
 }

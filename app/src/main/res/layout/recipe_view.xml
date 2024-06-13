@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Top Tab Part -->
+    <RelativeLayout
+        android:id="@+id/topTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/Primary">
+
+        <!-- Back Button -->
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_back_arrow"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/back_button"
+            android:layout_alignParentStart="true" />
+
+        <!-- Profile Button -->
+        <ImageButton
+            android:id="@+id/profileButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_profile_image"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/profile_button"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <!-- Image View -->
+    <ImageView
+        android:id="@+id/recipeImageView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/placeholder_image"
+        android:layout_below="@id/topTabLayout" />
+
+    <!-- Scrollable Description -->
+    <ScrollView
+        android:id="@+id/descriptionScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/recipeImageView"
+        android:layout_above="@id/bottomTabLayout">
+
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="recipe_description"
+            android:textSize="16sp"
+            android:padding="16dp" />
+    </ScrollView>
+
+    <!-- Bottom Tab with Buttons -->
+    <LinearLayout
+        android:id="@+id/bottomTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="@color/PrimaryDark">
+
+        <!-- Left Button: Add to Cookbook -->
+        <Button
+            android:id="@+id/addToCookbookButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/add_to_cookbook"
+            android:textColor="@android:color/white"
+            android:background="?attr/selectableItemBackground"
+            android:padding="12dp" />
+
+        <!-- Right Button: Start Challenge -->
+        <Button
+            android:id="@+id/startChallengeButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/start_challenge"
+            android:textColor="@android:color/white"
+            android:background="?attr/selectableItemBackground"
+            android:padding="12dp" />
+    </LinearLayout>
+
+</RelativeLayout>
