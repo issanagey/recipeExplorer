@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_RECIPES = "CREATE TABLE recipes (recipe_id INTEGER PRIMARY KEY AUTOINCREMENT, recipe_state TEXT , recipe_name TEXT, recipe_steps TEXT, recipe_description TEXT, recipe_image BLOB)";
 
     // Cookbook table create statement
-    private static final String CREATE_TABLE_COOKBOOKS = "CREATE TABLE cookbooks (user_id INTEGER PRIMARY KEY, recipe_id INTEGER)";
+    private static final String CREATE_TABLE_COOKBOOKS = "CREATE TABLE cookbooks (user_id INTEGER PRIMARY KEY, recipe_id INTEGER, PRIMARY KEY(user_id, recipe_id))";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

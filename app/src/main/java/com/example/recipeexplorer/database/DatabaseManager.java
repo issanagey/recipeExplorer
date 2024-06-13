@@ -251,5 +251,58 @@ public class DatabaseManager {
         return "No Match";
     }
 
+    public com.example.recipeexplorer.model.Recipe getRecipeById(int recipeId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                "recipe_id",
+                "recipe_state",
+                "recipe_name",
+                "recipe_steps",
+                "recipe_description",
+                "recipe_image"
+        };
+
+        String selection = "recipe_id = ?";
+        String[] selectionArgs = { String.valueOf(recipeId) };
+
+        Cursor cursor = db.query(
+                "recipes",
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        com.example.recipeexplorer.model.Recipe recipe = null;
+
+        if (cursor != null && cursor.moveToFirst()) {
+            String state = cursor.getString(cursor.getColumnIndexOrThrow("recipe_state"));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow("recipe_name"));
+            String steps = cursor.getString(cursor.getColumnIndexOrThrow("recipe_steps"));
+            String description = cursor.getString(cursor.getColumnIndexOrThrow("recipe_description"));
+            byte[] image = cursor.getBlob(cursor.getColumnIndexOrThrow("recipe_image"));
+
+            recipe = new com.example.recipeexplorer.model.Recipe(recipeId, state, name, steps, description, image);
+
+            cursor.close();
+        }
+
+        return recipe;
+    }
+
+    public void addRecipeToCookbook(long userId, int recipeId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("user_id", userId);
+        values.put("recipe_id", recipeId);
+
+        long newRowId = db.insert("cookbooks", null, values);
+        Log.d("DatabaseManager", "New row ID in cookbooks: " + newRowId);
+    }
+
     // Add for recipes, challenges, and achievements tables as needed.
 }

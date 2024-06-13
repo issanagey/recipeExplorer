@@ -47,16 +47,44 @@
         android:id="@+id/descriptionScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_below="@id/recipeImageView"
         android:layout_above="@id/bottomTabLayout">
 
-        <TextView
-            android:id="@+id/descriptionTextView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="recipe_description"
-            android:textSize="16sp"
-            android:padding="16dp" />
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Recipe Name -->
+            <TextView
+                android:id="@+id/recipeName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/recipe_name"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:paddingBottom="8dp"/>
+
+            <!-- Recipe State -->
+            <TextView
+                android:id="@+id/recipeState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/recipe_state"
+                android:textSize="18sp"
+                android:paddingBottom="8dp"/>
+
+            <!-- Recipe Description -->
+            <TextView
+                android:id="@+id/recipeDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/recipe_description"
+                android:textSize="18sp"/>
+        </LinearLayout>
+
     </ScrollView>
 
     <!-- Bottom Tab with Buttons -->
@@ -92,3 +120,4 @@
     </LinearLayout>
 
 </RelativeLayout>
+

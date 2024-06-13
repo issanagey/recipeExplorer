@@ -6,4 +6,7 @@
     <string name="start_challenge">Start Challenge</string>
     <string name="back_button">back_button</string>
     <string name="profile_button">profile_button</string>
+    <string name="recipe_name">Recipe Name</string>
+    <string name="recipe_state">Recipe State</string>
+    <string name="recipe_description">Recipe Description</string>
 </resources>
