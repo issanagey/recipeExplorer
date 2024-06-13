@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.google.android.material.snackbar.Snackbar;
+
 public class DatabaseManager {
     private DatabaseHelper dbHelper;
 
@@ -60,6 +62,80 @@ public class DatabaseManager {
             Log.d("Database", "ID: " + userId + " Name: " + userName + " Email: " + userEmail);
         }
         cursor.close();
+    }
+
+    // login verification
+    // returns true if name and pw match
+    public boolean LoginVerification(String name, String password){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                "name",
+                "password",
+        };
+
+        Cursor cursor = db.query(
+                "users",
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        while (cursor.moveToNext()) {
+
+            // get username & pw
+            String userName = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+            String userPassword = cursor.getString(cursor.getColumnIndexOrThrow("password"));
+
+            // check if username & pw match
+            if(userName.equals(name) && userPassword.equals(password)){
+                cursor.close();
+                return true;
+            }
+        }
+
+        // no matches found
+        cursor.close();
+        return false;
+    }
+
+    // create account verification
+    // returns true if account does not exist
+    public boolean CreateAccountVerification(String name){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                "name"
+        };
+
+        Cursor cursor = db.query(
+                "users",
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        while (cursor.moveToNext()) {
+
+            // get username
+            String userName = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+
+            // check if username already exists
+            if(userName.equals(name)){
+                cursor.close();
+                return false;
+            }
+        }
+
+        // no matches found
+        cursor.close();
+        return true;
     }
 
     // Add for recipes, challenges, and achievements tables as needed.
