@@ -25,8 +25,8 @@
         android:layout_height="76dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="11dp"
         android:contentDescription="@string/baseline_return_description"
         android:src="@drawable/baseline_return" />
 
@@ -38,54 +38,35 @@
         android:layout_below="@id/profileButton"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="203dp"
-        android:layout_marginEnd="133dp"
+        android:layout_marginStart="97dp"
+        android:layout_marginTop="216dp"
+        android:layout_marginEnd="76dp"
         android:text="@string/select_state" />
 
-    <TextView
-        android:id="@+id/boxTextView"
-        android:layout_width="234dp"
-        android:layout_height="37dp"
-        android:layout_below="@id/searchButton"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="41dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginEnd="136dp"
-        android:background="@android:color/darker_gray"
-        android:padding="16dp"
-        android:text="@string/empty"/>
-
+    <!-- Box Button -->
     <Button
-        android:id="@+id/cuisineButton"
+        android:id="@+id/boxButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/searchButton"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="39dp"
-        android:layout_marginTop="97dp"
-        android:layout_marginEnd="130dp"
-        android:text="@string/cuisine"
-        android:visibility="gone" />
+        android:layout_marginStart="105dp"
+        android:layout_marginTop="62dp"
+        android:layout_marginEnd="71dp"
+        android:text="@string/cuisine" />
 
-    <TextView
-        android:id="@+id/secondBoxTextView"
-        android:layout_width="237dp"
-        android:layout_height="35dp"
-        android:layout_below="@id/boxTextView"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="134dp"
-        android:background="@android:color/darker_gray"
-        android:padding="16dp"
-        android:text="@string/empty"
-        android:visibility="gone" />
-
+    <!-- ListView to display states -->
+    <ListView
+        android:id="@+id/listViewStates"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="8dp"
+        android:padding="8dp"
+        android:clipToPadding="false"
+        android:background="@android:color/white"
+        android:visibility="gone"/>
 </RelativeLayout>
-
 
 

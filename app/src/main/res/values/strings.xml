@@ -4,6 +4,7 @@
     <string name="baseline_return_description">Return</string>
     <string name="select_state">Select State</string>
     <string name="cuisine">Cuisine</string>
-    <string name="empty">Empty</string>
+    <string name="search_clicked">Search Clicked</string>
+    <string name="box_clicked">Box Clicked</string>
 </resources>
 
