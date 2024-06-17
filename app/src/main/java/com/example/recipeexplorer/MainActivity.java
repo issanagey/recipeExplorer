@@ -19,23 +19,17 @@ public class MainActivity extends AppCompatActivity {
         TextView secondBoxTextView = findViewById(R.id.secondBoxTextView);
 
         searchButton.setOnClickListener(v -> {
-            // Display the word "Penang"
-            boxTextView.setText(getString(R.string.penang));
+            // Display a message
+            boxTextView.setText("Your message here");
 
-            // Make the Cuisine Button and Second Box TextView visible with a fade-in animation
+            // Make the Cuisine Button and Second Box TextView visible
             cuisineButton.setVisibility(View.VISIBLE);
-            cuisineButton.setAlpha(0f);
-            cuisineButton.animate().alpha(1f).setDuration(300);
-
             secondBoxTextView.setVisibility(View.VISIBLE);
-            secondBoxTextView.setAlpha(0f);
-            secondBoxTextView.animate().alpha(1f).setDuration(300);
         });
 
         cuisineButton.setOnClickListener(v -> {
-            // Display the word "Laksa"
-            secondBoxTextView.setText(getString(R.string.laksa));
+            // Display another message
+            secondBoxTextView.setText("Another message here");
         });
     }
 }
-
