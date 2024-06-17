@@ -1,5 +1,10 @@
 <resources>
-    <string name="app_name">RecipeExplorer</string>
-    <string name="createAcc"><u>Create Account</u></string>
-    <string name="Login"><u>Login</u></string>
+    <string name="app_name">Recipe Explorer</string>
+    <string name="baseline_person_description">Profile</string>
+    <string name="baseline_return_description">Return</string>
+    <string name="select_state">Select State</string>
+    <string name="cuisine">Cuisine</string>
+    <string name="empty">Empty</string>
+    <string name="penang">Penang</string>
+    <string name="laksa">Laksa</string>
 </resources>
