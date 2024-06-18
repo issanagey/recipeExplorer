@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -121,6 +122,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void Profile(View view){
+        setContentView(R.layout.profile);
+        DatabaseManager dbm = new DatabaseManager(getApplicationContext());
+        ImageView myImage = findViewById(R.id.user_avatar);
+        myImage.setImageBitmap(dbm.GetUserProfilePicture(dbm.GetCurrentUserID()));
+
     }
 
 }
