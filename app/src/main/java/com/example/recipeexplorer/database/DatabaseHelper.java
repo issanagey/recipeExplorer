@@ -4,7 +4,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 
+import android.graphics.Bitmap.CompressFormat;
+
+import java.io.ByteArrayOutputStream;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Version
@@ -47,6 +53,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("name", "admin");
         values.put("password", "admin");
         values.put("challenge_completed", 0);
+
+        Bitmap emptyBitmap = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
+
+        // Optionally, fill the Bitmap with a black color
+        Canvas canvas = new Canvas(emptyBitmap);
+        canvas.drawColor(Color.BLACK);
+
+        // Convert the Bitmap to a byte array
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        emptyBitmap.compress(CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+        // Put the byte array into ContentValues
+        values.put("profile_picture", byteArray);
+
         db.insert("users", null, values);
 
         // test

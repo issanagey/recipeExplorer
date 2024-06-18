@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,12 +13,21 @@ import com.example.recipeexplorer.database.DatabaseManager;
 import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
+    private DatabaseManager dbm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // go to login page when starting app
-        Login(null);
+        dbm = new DatabaseManager(getApplicationContext());
 
+        // Check if a user is already logged in
+        if (dbm.IsLoggedIn()) {
+            // Go to main activity
+            Profile(null);
+        } else {
+            // Go to login page
+            Login(null);
+        }
     }
 
     // Login page
@@ -128,8 +138,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.profile);
         DatabaseManager dbm = new DatabaseManager(getApplicationContext());
         ImageView myImage = findViewById(R.id.user_avatar);
+        TextView userName = findViewById(R.id.user_name);
         myImage.setImageBitmap(dbm.GetUserProfilePicture(dbm.GetCurrentUserID()));
-
+        userName.setText(dbm.GetUsername(dbm.GetCurrentUserID()));
     }
+
+
 
 }
