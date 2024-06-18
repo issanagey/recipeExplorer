@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_red_light"
+    android:background="@android:color/white"
     tools:context=".MainActivity">
 
     <!-- Profile Button -->
@@ -30,43 +30,48 @@
         android:contentDescription="@string/baseline_return_description"
         android:src="@drawable/baseline_return" />
 
-    <!-- Search for Recipes Button -->
+    <!-- Select State Button -->
     <Button
         android:id="@+id/searchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/profileButton"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="97dp"
-        android:layout_marginTop="216dp"
-        android:layout_marginEnd="76dp"
-        android:text="@string/select_state" />
+        android:layout_toStartOf="@id/profileButton"
+        android:layout_toEndOf="@id/returnButton"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/select_state"
+        android:maxWidth="200dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:gravity="center" />
 
-    <!-- Box Button -->
-    <Button
-        android:id="@+id/boxButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/searchButton"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="105dp"
-        android:layout_marginTop="62dp"
-        android:layout_marginEnd="71dp"
-        android:text="@string/cuisine" />
 
     <!-- ListView to display states -->
     <ListView
         android:id="@+id/listViewStates"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchButton"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/white"
+        android:clipToPadding="false"
         android:divider="@android:color/transparent"
         android:dividerHeight="8dp"
         android:padding="8dp"
-        android:clipToPadding="false"
-        android:background="@android:color/white"
-        android:visibility="gone"/>
+        android:visibility="gone" /> <!-- Initially set to gone -->
+
+    <!-- Cuisine Button -->
+    <Button
+        android:id="@+id/boxButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listViewStates"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/cuisine" />
+
 </RelativeLayout>
+
+
 
 

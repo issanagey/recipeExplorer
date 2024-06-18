@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class DatabaseManager {
-    private DatabaseHelper dbHelper;
+    private final DatabaseHelper dbHelper;
 
     public DatabaseManager(Context context) {
         dbHelper = new DatabaseHelper(context);

@@ -115,13 +115,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(true, "recipes", columns, null, null, null, null, null, null);
 
         if (cursor.moveToFirst()) {
-            do {
-                String state = cursor.getString(cursor.getColumnIndex("recipe_state"));
-                states.add(state);
-            } while (cursor.moveToNext());
+            int recipeStateIndex = cursor.getColumnIndex("recipe_state");
+            if (recipeStateIndex >= 0) {
+                do {
+                    String state = cursor.getString(recipeStateIndex);
+                    states.add(state);
+                } while (cursor.moveToNext());
+            }
         }
 
         cursor.close();
         return states;
+    }
+
+    // Method to fetch the recipe description by state
+    public String getRecipeByState(String state) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String recipeDescription = "No recipe found";
+
+        String[] columns = {"recipe_description"};
+        String selection = "recipe_state = ?";
+        String[] selectionArgs = { state };
+
+        Cursor cursor = db.query("recipes", columns, selection, selectionArgs, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            int recipeDescriptionIndex = cursor.getColumnIndex("recipe_description");
+            if (recipeDescriptionIndex >= 0) {
+                recipeDescription = cursor.getString(recipeDescriptionIndex);
+            }
+        }
+
+        cursor.close();
+        return recipeDescription;
     }
 }
