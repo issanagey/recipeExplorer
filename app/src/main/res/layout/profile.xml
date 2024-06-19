@@ -156,22 +156,6 @@
                     android:text="Collected Achievements"
                     android:textSize="20sp"
                     android:textStyle="bold" />
-
-                <!-- Dynamically generated in java -->
-
-                <!--            <TextView-->
-                <!--                android:id="@+id/collected_achievement_1"-->
-                <!--                android:layout_width="wrap_content"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:text="Achievement 1"-->
-                <!--                android:layout_marginBottom="4dp"/>-->
-
-                <!--            <TextView-->
-                <!--                android:id="@+id/collected_achievement_2"-->
-                <!--                android:layout_width="wrap_content"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:text="Achievement 2"-->
-                <!--                android:layout_marginBottom="4dp"/>-->
             </LinearLayout>
 
         </LinearLayout>
