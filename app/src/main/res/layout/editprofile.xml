@@ -30,7 +30,6 @@
             android:id="@+id/edit_user_avatar"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/ic_profile_placeholder"
             android:layout_marginBottom="16dp" />
 
         <Button

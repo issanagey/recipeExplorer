@@ -139,8 +139,16 @@ public class MainActivity extends AppCompatActivity {
         DatabaseManager dbm = new DatabaseManager(getApplicationContext());
         ImageView myImage = findViewById(R.id.user_avatar);
         TextView userName = findViewById(R.id.user_name);
+        TextView recipesTried = findViewById(R.id.stat_recipes_tried);
         myImage.setImageBitmap(dbm.GetUserProfilePicture(dbm.GetCurrentUserID()));
         userName.setText(dbm.GetUsername(dbm.GetCurrentUserID()));
+        recipesTried.setText(dbm.GetUserRecipesTried(dbm.GetCurrentUserID()));
+    }
+
+    public void EditProfile(View view){
+        setContentView(R.layout.editprofile);
+        DatabaseManager dbm = new DatabaseManager(getApplicationContext());
+
     }
 
 

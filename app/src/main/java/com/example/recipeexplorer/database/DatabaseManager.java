@@ -295,5 +295,40 @@ public class DatabaseManager {
         canvas.drawColor(Color.WHITE); // or use Color.WHITE for a white background
         return emptyBitmap;
     }
+
+    public Integer GetUserRecipesTried(int ID){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                "id",
+                "challenge_completed"
+        };
+
+        Cursor cursor = db.query(
+                "users",
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        while (cursor.moveToNext()) {
+
+            long userId = cursor.getLong(cursor.getColumnIndexOrThrow("id"));
+
+            // check id
+            if(userId == ID){
+                Integer recipesTried = Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("challenge_completed")));
+                cursor.close();
+                return recipesTried;
+            }
+        }
+
+        // no recipes found
+        cursor.close();
+        return 0;
+    }
     // Add for recipes, challenges, and achievements tables as needed.
 }
