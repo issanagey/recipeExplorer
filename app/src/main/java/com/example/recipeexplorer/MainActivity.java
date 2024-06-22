@@ -239,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 else{
+                    dbm.AddChallengeCompleted(dbm.GetCurrentUserID());
                     Main(null);
                 }
 

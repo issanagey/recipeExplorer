@@ -291,5 +291,36 @@ public class DatabaseManager {
         return "No Match";
     }
 
+    public void AddChallengeCompleted(Integer user_id) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // first, we need to get the current challenge completed value
+        String[] projection = {"challenge_completed"};
+
+        Cursor cursor = db.query(
+                "users",
+                new String[] {"challenge_completed"},
+                "id = ?",
+                new String[] {String.valueOf(user_id)},
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToFirst();
+        int challenge_completed = cursor.getInt(cursor.getColumnIndexOrThrow("challenge_completed"));
+
+        // increment challenge completed value by 1
+        challenge_completed++;
+        Log.d("MyApp", Integer.toString(challenge_completed));
+
+        // New value for one column
+        ContentValues values = new ContentValues();
+        values.put("challenge_completed", challenge_completed);
+
+        // update challenge completed value
+        db.update("users",values, "id = ?", new String[] {String.valueOf(user_id)});
+
+    }
     // Add for recipes, challenges, and achievements tables as needed.
 }
