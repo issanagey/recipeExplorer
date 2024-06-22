@@ -113,7 +113,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/stat_challenges_completed"
+                android:id="@+id/achievements_stat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"

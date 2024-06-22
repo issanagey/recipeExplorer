@@ -140,9 +140,25 @@ public class MainActivity extends AppCompatActivity {
         ImageView myImage = findViewById(R.id.user_avatar);
         TextView userName = findViewById(R.id.user_name);
         TextView recipesTried = findViewById(R.id.stat_recipes_tried);
+        TextView achievementEarned = findViewById(R.id.achievements_stat);
         myImage.setImageBitmap(dbm.GetUserProfilePicture(dbm.GetCurrentUserID()));
         userName.setText(dbm.GetUsername(dbm.GetCurrentUserID()));
-        recipesTried.setText(dbm.GetUserRecipesTried(dbm.GetCurrentUserID()));
+        Integer Num = dbm.GetUserRecipesTried(dbm.GetCurrentUserID());
+        recipesTried.setText(Integer.toString(Num));
+        if(Num <=0){
+            achievementEarned.setText("0");
+        }
+        else if(Num <= 3 ){
+            achievementEarned.setText("1");
+        }
+        else if(Num <= 6){
+            achievementEarned.setText("2");
+        }
+        else{
+            achievementEarned.setText("3");
+        }
+
+
     }
 
     public void EditProfile(View view){

@@ -326,9 +326,9 @@ public class DatabaseManager {
             }
         }
 
-        // no recipes found
+        // no recipes tried found
         cursor.close();
-        return 0;
+        return 999999999;
     }
     // Add for recipes, challenges, and achievements tables as needed.
 }
