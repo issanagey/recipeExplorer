@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.google.android.material.snackbar.Snackbar;
-
 public class DatabaseManager {
     private DatabaseHelper dbHelper;
 
@@ -207,14 +205,10 @@ public class DatabaseManager {
                 null
         );
 
-        while (cursor.moveToNext()) {
-
-            // get id
-            String id_str = cursor.getString(cursor.getColumnIndexOrThrow("id"));
-            int id = Integer.parseInt(id_str);
-
+        if (cursor.moveToFirst()) {
+            int userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
             cursor.close();
-            return id;
+            return userId;
         }
 
         // no user currently logged in
