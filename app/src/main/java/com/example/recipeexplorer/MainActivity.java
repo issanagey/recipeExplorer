@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -171,4 +172,36 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.profile_placeholder);
 
     }
+
+    // Challenge page
+//    public void Challenge(View view, int recipe_id){
+
+    public void Challenge(View view){
+        setContentView(R.layout.challenge);
+
+        DatabaseManager dbm = new DatabaseManager(getApplicationContext());
+
+        // get scroll view linear layout
+        LinearLayout listView = findViewById(R.id.steps_list);
+
+        // grab challenge steps from database
+        String steps = dbm.GetChallengeSteps(1); // this is just a placeholder for now, value should be passed from recipe view
+        String[] list_of_steps = steps.split("; ");
+
+        // create text view for each step
+        for (String step: list_of_steps) {
+            TextView textView = new TextView(this);
+            textView.setText(step);
+            textView.setTextSize(20);
+
+            // add step to scroll view
+            listView.addView(textView);
+        }
+
+        // get button reference
+        Button button = (Button) findViewById(R.id.complete_button);
+
+    }
+
+
 }
