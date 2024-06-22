@@ -257,5 +257,40 @@ public class DatabaseManager {
         return "No Match";
     }
 
+    public String GetChallengeSteps(int recipeId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                "recipe_id",
+                "recipe_steps"
+        };
+
+        Cursor cursor = db.query(
+                "recipes",
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        while (cursor.moveToNext()) {
+
+            Integer current_recipeID = cursor.getInt(cursor.getColumnIndexOrThrow("recipe_id"));
+            Log.d("MyApp", Integer.toString(current_recipeID));
+            // check id
+            if(current_recipeID == recipeId){
+                String steps = cursor.getString(cursor.getColumnIndexOrThrow("recipe_steps"));
+                cursor.close();
+                return steps;
+            }
+        }
+
+        // no user found
+        cursor.close();
+        return "No Match";
+    }
+
     // Add for recipes, challenges, and achievements tables as needed.
 }
