@@ -278,7 +278,6 @@ public class DatabaseManager {
         while (cursor.moveToNext()) {
 
             Integer current_recipeID = cursor.getInt(cursor.getColumnIndexOrThrow("recipe_id"));
-            Log.d("MyApp", Integer.toString(current_recipeID));
             // check id
             if(current_recipeID == recipeId){
                 String steps = cursor.getString(cursor.getColumnIndexOrThrow("recipe_steps"));

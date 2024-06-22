@@ -1,5 +1,6 @@
 package com.example.recipeexplorer;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -188,11 +189,29 @@ public class MainActivity extends AppCompatActivity {
         String steps = dbm.GetChallengeSteps(1); // this is just a placeholder for now, value should be passed from recipe view
         String[] list_of_steps = steps.split("; ");
 
+        // color
+        Boolean even_odd = true;
+
+        // step count
+        int step_count = 1;
+
         // create text view for each step
         for (String step: list_of_steps) {
+
+            // create new text view
             TextView textView = new TextView(this);
+
+            // set id, text, size, and padding
+            textView.setId(step_count);
+            step_count++;
             textView.setText(step);
-            textView.setTextSize(20);
+            textView.setTextSize(30);
+            textView.setPadding(10, 10, 10, 10);
+
+            // alternate background color
+            if(even_odd)textView.setBackgroundColor(Color.GRAY);
+            else textView.setBackgroundColor(Color.DKGRAY);
+            even_odd = !even_odd;
 
             // add step to scroll view
             listView.addView(textView);
@@ -200,6 +219,32 @@ public class MainActivity extends AppCompatActivity {
 
         // get button reference
         Button button = (Button) findViewById(R.id.complete_button);
+
+        // keep count on how many steps have been completed
+        final int[] steps_completed_count = {0};
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                steps_completed_count[0]++;
+
+                if(steps_completed_count[0] <= list_of_steps.length){
+                    if(steps_completed_count[0] % 2 == 0) findViewById(steps_completed_count[0]).setBackgroundColor(Color.GREEN);
+                    if(steps_completed_count[0] % 2 == 1) findViewById(steps_completed_count[0]).setBackgroundColor(Color.YELLOW);
+
+                    if(steps_completed_count[0] == list_of_steps.length){
+                        Button clickedButton = (Button) v;
+                        clickedButton.setText("Complete Challenge");
+                    }
+
+                }
+
+                else{
+                    Main(null);
+                }
+
+            }
+
+        });
 
     }
 
