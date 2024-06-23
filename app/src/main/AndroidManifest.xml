@@ -13,6 +13,7 @@
         android:theme="@style/Theme.RecipeExplorer"
         tools:targetApi="31" > <!--        should be 34 ?-->
 
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -23,6 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".EditProfileActivity" />
     </application>
 
 </manifest>

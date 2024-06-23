@@ -8,10 +8,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.sql.Blob;
 
 public class DatabaseManager {
     private DatabaseHelper dbHelper;
+    private Context context;
 
     public DatabaseManager(Context context) {
         dbHelper = new DatabaseHelper(context);
@@ -330,5 +337,69 @@ public class DatabaseManager {
         cursor.close();
         return 999999999;
     }
+
+    public boolean verifyPassword(String currentPassword) {
+        Cursor cursor = null;
+        try {
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+            cursor = db.rawQuery("SELECT id FROM users WHERE password = ?", new String[]{currentPassword});
+            return cursor != null && cursor.moveToFirst();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    public boolean updateUsername(String newUsername) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", newUsername);
+
+        int rowsAffected = db.update("users", values, "id = ?", new String[]{String.valueOf(GetCurrentUserID())});
+        return rowsAffected > 0;
+    }
+
+    public boolean updatePassword(String newPassword) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("password", newPassword);
+
+        int rowsAffected = db.update("users", values, "id = ?", new String[]{String.valueOf(GetCurrentUserID())});
+        return rowsAffected > 0;
+    }
+
+    public void updateProfilePicture(Bitmap newProfilePicture) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        // Convert Bitmap to byte array
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        newProfilePicture.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+        // Put byte array into ContentValues
+        values.put("profile_picture", byteArray);
+
+        // Update the user's profile picture in the database
+        int rowsAffected = db.update("users", values, "id = ?", new String[]{String.valueOf(GetCurrentUserID())});
+
+    }
+
+
+
+
+
+
+
+//    private Bitmap getBitmapFromUri(Uri uri) {
+//        try {
+//            return MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+
     // Add for recipes, challenges, and achievements tables as needed.
 }
