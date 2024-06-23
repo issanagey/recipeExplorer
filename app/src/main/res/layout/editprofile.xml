@@ -1,142 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="#87CEFA">
+    android:background="#87CEFA"
+    android:padding="16dp">
 
-    <!-- Edit Profile Header -->
-    <TextView
-        android:id="@+id/edit_profile_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit Profile"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="24dp" />
-
-    <!-- Profile Picture Section -->
     <LinearLayout
-        android:id="@+id/profile_picture_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:layout_marginBottom="24dp">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/edit_user_avatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="16dp" />
-
-        <Button
-            android:id="@+id/btn_change_picture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Change Picture"
-            android:onClick="onChangePictureClicked"/>
-    </LinearLayout>
-
-    <!-- Username Section -->
-    <LinearLayout
-        android:id="@+id/username_section"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="24dp">
-
+        <!-- Edit Profile Header -->
         <TextView
-            android:id="@+id/label_username"
+            android:id="@+id/edit_profile_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Username"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp" />
+            android:text="Edit Profile"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp" />
 
-        <EditText
-            android:id="@+id/edit_user_name"
+        <!-- Profile Picture Section -->
+        <LinearLayout
+            android:id="@+id/profile_picture_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter new username"
-            android:textSize="18sp"
-            android:padding="8dp"
-            android:background="@android:drawable/edit_text" />
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="24dp">
+
+            <ImageView
+                android:id="@+id/edit_user_avatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="16dp" />
+
+            <Button
+                android:id="@+id/btn_change_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Change Picture"
+                android:onClick="onChangePictureClicked"/>
+        </LinearLayout>
+
+        <!-- Username Section -->
+        <LinearLayout
+            android:id="@+id/username_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:id="@+id/label_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/edit_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter new username"
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:background="@android:drawable/edit_text" />
+        </LinearLayout>
+
+        <!-- Password Section -->
+        <LinearLayout
+            android:id="@+id/password_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:id="@+id/label_change_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Change Password"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/edit_current_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Current Password"
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:inputType="textPassword"
+                android:background="@android:drawable/edit_text"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/edit_new_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="New Password"
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:inputType="textPassword"
+                android:background="@android:drawable/edit_text"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/edit_confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Confirm New Password"
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:inputType="textPassword"
+                android:background="@android:drawable/edit_text"
+                android:layout_marginBottom="8dp" />
+        </LinearLayout>
+
+        <!-- Save and Cancel Buttons -->
+        <LinearLayout
+            android:id="@+id/save_cancel_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/btn_save_changes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save Changes"
+                android:layout_marginEnd="16dp"
+                android:onClick="onSaveChangesClicked"/>
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:onClick="onCancelClicked"/>
+        </LinearLayout>
+
     </LinearLayout>
-
-    <!-- Password Section -->
-    <LinearLayout
-        android:id="@+id/password_section"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="24dp">
-
-        <TextView
-            android:id="@+id/label_change_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Change Password"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp" />
-
-        <EditText
-            android:id="@+id/edit_current_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Current Password"
-            android:textSize="18sp"
-            android:padding="8dp"
-            android:inputType="textPassword"
-            android:background="@android:drawable/edit_text"
-            android:layout_marginBottom="8dp" />
-
-        <EditText
-            android:id="@+id/edit_new_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="New Password"
-            android:textSize="18sp"
-            android:padding="8dp"
-            android:inputType="textPassword"
-            android:background="@android:drawable/edit_text"
-            android:layout_marginBottom="8dp" />
-
-        <EditText
-            android:id="@+id/edit_confirm_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Confirm New Password"
-            android:textSize="18sp"
-            android:padding="8dp"
-            android:inputType="textPassword"
-            android:background="@android:drawable/edit_text" />
-    </LinearLayout>
-
-    <!-- Save and Cancel Buttons -->
-    <LinearLayout
-        android:id="@+id/save_cancel_buttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
-
-        <Button
-            android:id="@+id/btn_save_changes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save Changes"
-            android:layout_marginEnd="16dp"
-            android:onClick="onSaveChangesClicked"/>
-
-        <Button
-            android:id="@+id/btn_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cancel"
-            android:onClick="onCancelClicked"/>
-    </LinearLayout>
-
-</LinearLayout>
+</ScrollView>
