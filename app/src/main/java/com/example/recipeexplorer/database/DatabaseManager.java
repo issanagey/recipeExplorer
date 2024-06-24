@@ -269,35 +269,32 @@ public class DatabaseManager {
         Cursor cursor = db.query(
                 "users",
                 projection,
-                null,
-                null,
+                "id = ?",
+                new String[]{String.valueOf(ID)},
                 null,
                 null,
                 null
         );
 
-        while (cursor.moveToNext()) {
+        if (cursor != null && cursor.moveToFirst()) {
+            byte[] blob = cursor.getBlob(cursor.getColumnIndexOrThrow("profile_picture"));
+            cursor.close();
 
-            long userId = cursor.getLong(cursor.getColumnIndexOrThrow("id"));
-
-            // check id
-            if(userId == ID){
-                byte[] blob = cursor.getBlob(cursor.getColumnIndexOrThrow("profile_picture"));
-                Bitmap profilePicture = BitmapFactory.decodeByteArray(blob, 0, blob.length);
-                cursor.close();
-                return profilePicture;
+            if (blob != null) {
+                return BitmapFactory.decodeByteArray(blob, 0, blob.length);
             }
         }
 
-        // no user found
-        cursor.close();
+        // If no profile picture is found, or in case of any issue, return a default/empty Bitmap
+        if (cursor != null) {
+            cursor.close();
+        }
         Bitmap emptyBitmap = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
-
-        // Optionally, fill the Bitmap with a transparent color
         Canvas canvas = new Canvas(emptyBitmap);
-        canvas.drawColor(Color.WHITE); // or use Color.WHITE for a white background
+        canvas.drawColor(Color.WHITE); // or use Color.TRANSPARENT for a transparent background
         return emptyBitmap;
     }
+
 
     public Integer GetUserRecipesTried(int ID){
         SQLiteDatabase db = dbHelper.getReadableDatabase();
