@@ -8,13 +8,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.sql.Blob;
 
 public class DatabaseManager {
     private DatabaseHelper dbHelper;
@@ -383,6 +379,7 @@ public class DatabaseManager {
 
         // Update the user's profile picture in the database
         int rowsAffected = db.update("users", values, "id = ?", new String[]{String.valueOf(GetCurrentUserID())});
+
 
     }
 
