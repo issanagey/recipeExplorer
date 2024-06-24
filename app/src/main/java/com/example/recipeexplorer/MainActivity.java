@@ -224,22 +224,18 @@ public class MainActivity extends AppCompatActivity {
         String newPassword = newPasswordEditText.getText().toString().trim();
         String confirmPassword = confirmPasswordEditText.getText().toString().trim();
 
+        Drawable drawable = changeProfilePicture.getDrawable();
+        boolean profilePictureChanged = drawable != null;
+
         boolean usernameChanged = !newUsername.isEmpty();
         boolean passwordChanged = !newPassword.isEmpty();
-        boolean profilePictureChanged = changeProfilePicture.getDrawable() != null;
 
-        //if (!usernameChanged && !passwordChanged && !profilePictureChanged) {
-            //Snackbar.make(findViewById(android.R.id.content), "No changes made", Snackbar.LENGTH_SHORT).show();
-            //return;
-        //}
+        if (!usernameChanged && !passwordChanged && !profilePictureChanged) {
+            Snackbar.make(findViewById(android.R.id.content), "No changes made", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
 
         DatabaseManager dbm = new DatabaseManager(getApplicationContext());
-
-        if (profilePictureChanged) {
-            Drawable drawable = changeProfilePicture.getDrawable();
-            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-            dbm.updateProfilePicture(bitmap);
-        }
 
         if (passwordChanged) {
             if (currentPassword.isEmpty()) {
@@ -291,7 +287,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (profilePictureChanged) {
-            updateSuccess = true;
+            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+            dbm.updateProfilePicture(bitmap);
+            updateSuccess = true;  // Assuming the profile picture update always succeeds
         }
 
         if (updateSuccess) {
@@ -303,6 +301,7 @@ public class MainActivity extends AppCompatActivity {
             Snackbar.make(findViewById(android.R.id.content), "Failed to update profile", Snackbar.LENGTH_SHORT).show();
         }
     }
+
 
 
     public void onCancelClicked() {
