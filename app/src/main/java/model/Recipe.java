@@ -1,8 +1,8 @@
-package com.example.recipeexplorer.database;
+package model;
 
 public class Recipe {
-    private String title;
-    private String description;
+    private final String title;
+    private final String description;
 
     public Recipe(String title, String description) {
         this.title = title;

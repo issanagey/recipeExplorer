@@ -9,6 +9,8 @@ import com.example.recipeexplorer.model.Recipe;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Recipe;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Version

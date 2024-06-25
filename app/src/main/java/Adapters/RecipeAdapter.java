@@ -1,4 +1,4 @@
-package com.example.recipeexplorer.database;
+package Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.recipeexplorer.R;
+import model.Recipe;
 import com.example.recipeexplorer.model.Recipe;
 
 import java.util.List;
