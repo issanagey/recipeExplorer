@@ -30,25 +30,30 @@
         android:contentDescription="@string/baseline_return_description"
         android:src="@drawable/baseline_return" />
 
-    <!-- Select State Button -->
-    <Button
-        android:id="@+id/searchButton"
+    <!-- Spinner to select state -->
+    <Spinner
+        android:id="@+id/spinnerStates"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toStartOf="@id/profileButton"
         android:layout_toEndOf="@id/returnButton"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/select_state"
-        android:maxWidth="200dp"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:gravity="center" />
+        android:layout_marginTop="16dp"/>
 
+    <!-- Select State Button -->
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerStates"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/select_state" />
 
-    <!-- ListView to display states -->
+    <!-- ListView to display recipes -->
     <ListView
-        android:id="@+id/listViewStates"
+        android:id="@+id/listViewRecipes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/searchButton"
@@ -57,18 +62,7 @@
         android:clipToPadding="false"
         android:divider="@android:color/transparent"
         android:dividerHeight="8dp"
-        android:padding="8dp"
-        android:visibility="gone" /> <!-- Initially set to gone -->
-
-    <!-- Cuisine Button -->
-    <Button
-        android:id="@+id/boxButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/listViewStates"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="@string/cuisine" />
+        android:padding="8dp" />
 
 </RelativeLayout>
 

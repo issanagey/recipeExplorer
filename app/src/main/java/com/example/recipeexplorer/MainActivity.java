@@ -1,21 +1,26 @@
 package com.example.recipeexplorer;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.recipeexplorer.adapters.RecipeAdapter;
 import com.example.recipeexplorer.database.DatabaseHelper;
+import com.example.recipeexplorer.model.Recipe;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private DatabaseHelper dbHelper;
-    private ListView listViewStates;
-    private ArrayAdapter<String> statesAdapter;
-    private Button cuisineButton;
+    private Spinner spinnerStates;
+    private ListView listViewRecipes;
+    private RecipeAdapter recipeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,53 +31,36 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
 
         // Initialize Views
-        listViewStates = findViewById(R.id.listViewStates);
-        cuisineButton = findViewById(R.id.boxButton);
+        spinnerStates = findViewById(R.id.spinnerStates);
+        listViewRecipes = findViewById(R.id.listViewRecipes);
 
-        // Initialize ArrayAdapter for the ListView
-        statesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
-        listViewStates.setAdapter(statesAdapter);
+        // Load states into Spinner
+        List<String> states = dbHelper.getAllStates();
+        ArrayAdapter<String> statesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, states);
+        statesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerStates.setAdapter(statesAdapter);
+
+        // Initialize custom adapter for the ListView
+        recipeAdapter = new RecipeAdapter(this, new ArrayList<>());
+        listViewRecipes.setAdapter(recipeAdapter);
 
         // Set onClickListener for Select State Button
         Button selectStateButton = findViewById(R.id.searchButton);
         selectStateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listViewStates.getVisibility() == View.GONE) {
-                    // Fetch states from the database
-                    List<String> states = dbHelper.getAllStates();
+                String selectedState = spinnerStates.getSelectedItem().toString();
+                // Fetch recipes from the database
+                List<Recipe> recipes = dbHelper.getAllRecipesByState(selectedState);
 
-                    // Clear previous data in the adapter
-                    statesAdapter.clear();
+                // Clear previous data in the adapter
+                recipeAdapter.clear();
 
-                    // Add fetched states to the adapter
-                    statesAdapter.addAll(states);
+                // Add fetched recipes to the adapter
+                recipeAdapter.addAll(recipes);
 
-                    // Notify the adapter that the data set has changed
-                    statesAdapter.notifyDataSetChanged();
-
-                    // Make the ListView visible
-                    listViewStates.setVisibility(View.VISIBLE);
-                } else {
-                    // Toggle the ListView visibility
-                    listViewStates.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        // Set onItemClickListener for the ListView
-        listViewStates.setOnItemClickListener((parent, view, position, id) -> {
-            String selectedState = statesAdapter.getItem(position);
-
-            if (selectedState != null) {
-                // Fetch the recipe for the selected state from the database
-                String recipeDescription = dbHelper.getRecipeByState(selectedState);
-
-                // Update the cuisine button text with the recipe description
-                cuisineButton.setText(recipeDescription);
-
-                // Optionally hide the ListView after selection
-                listViewStates.setVisibility(View.GONE);
+                // Notify the adapter that the data set has changed
+                recipeAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -81,9 +69,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         dbHelper.close(); // Close the database connection when activity is destroyed
         super.onDestroy();
-    }
 }
-
-
-
-
+}

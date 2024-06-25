@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
+import com.example.recipeexplorer.model.Recipe;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,8 +111,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<String> states = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String[] columns = {"DISTINCT recipe_state"}; // Distinct states
-        Cursor cursor = db.query(true, "recipes", columns, null, null, null, null, null, null);
+        String query = "SELECT DISTINCT recipe_state FROM recipes";
+        Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
             int recipeStateIndex = cursor.getColumnIndex("recipe_state");
@@ -128,25 +128,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return states;
     }
 
-    // Method to fetch the recipe description by state
-    public String getRecipeByState(String state) {
+    // Method to fetch all recipes by state
+    public List<Recipe> getAllRecipesByState(String state) {
+        List<Recipe> recipes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String recipeDescription = "No recipe found";
 
-        String[] columns = {"recipe_description"};
+        String[] columns = {"recipe_name", "recipe_description"};
         String selection = "recipe_state = ?";
         String[] selectionArgs = { state };
 
         Cursor cursor = db.query("recipes", columns, selection, selectionArgs, null, null, null);
 
         if (cursor.moveToFirst()) {
+            int recipeNameIndex = cursor.getColumnIndex("recipe_name");
             int recipeDescriptionIndex = cursor.getColumnIndex("recipe_description");
-            if (recipeDescriptionIndex >= 0) {
-                recipeDescription = cursor.getString(recipeDescriptionIndex);
+            if (recipeNameIndex >= 0 && recipeDescriptionIndex >= 0) {
+                do {
+                    String recipeName = cursor.getString(recipeNameIndex);
+                    String recipeDescription = cursor.getString(recipeDescriptionIndex);
+                    recipes.add(new Recipe(recipeName, recipeDescription));
+                } while (cursor.moveToNext());
             }
         }
 
         cursor.close();
-        return recipeDescription;
-    }
+        return recipes;
+}
 }
