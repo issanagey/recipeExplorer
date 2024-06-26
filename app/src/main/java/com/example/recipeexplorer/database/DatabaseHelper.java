@@ -9,7 +9,7 @@ import com.example.recipeexplorer.model.Recipe;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Recipe;
+import com.example.recipeexplorer.models.Recipe;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 

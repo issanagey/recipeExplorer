@@ -8,7 +8,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.recipeexplorer.adapters.RecipeAdapter;
 import com.example.recipeexplorer.database.DatabaseHelper;
 import com.example.recipeexplorer.model.Recipe;
 

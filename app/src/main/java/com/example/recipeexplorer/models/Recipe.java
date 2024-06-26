@@ -1,4 +1,4 @@
-package model;
+package com.example.recipeexplorer.models;
 
 public class Recipe {
     private final String title;
