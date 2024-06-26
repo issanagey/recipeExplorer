@@ -1,28 +1,34 @@
+// Updated DatabaseManager class
 package com.example.recipeexplorer.database;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.util.Log;
 
-import com.google.android.material.snackbar.Snackbar;
+import java.io.ByteArrayOutputStream;
 
 public class DatabaseManager {
-    private DatabaseHelper dbHelper;
+    private final DatabaseHelper dbHelper;
+    private Context context;
 
     public DatabaseManager(Context context) {
         dbHelper = new DatabaseHelper(context);
     }
 
     // Method to add a user to the database
-    public void addUser(String name, String email, String password, byte[] profilePicture) {
+    public void addUser(String name, String password, byte[] profilePicture) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put("name", name);
-        values.put("email", email);
         values.put("password", password);
+        values.put("challenge_completed", 0);
         values.put("profile_picture", profilePicture);
 
         long newRowId = db.insert("users", null, values);
@@ -34,11 +40,8 @@ public class DatabaseManager {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String[] projection = {
-                "id",
                 "name",
-                "email",
                 "password",
-                "profile_picture"
         };
 
         Cursor cursor = db.query(
@@ -54,12 +57,9 @@ public class DatabaseManager {
         while (cursor.moveToNext()) {
             long userId = cursor.getLong(cursor.getColumnIndexOrThrow("id"));
             String userName = cursor.getString(cursor.getColumnIndexOrThrow("name"));
-            String userEmail = cursor.getString(cursor.getColumnIndexOrThrow("email"));
-            String userPassword = cursor.getString(cursor.getColumnIndexOrThrow("password"));
-            byte[] userProfilePicture = cursor.getBlob(cursor.getColumnIndexOrThrow("profile_picture"));
 
             // Handle the retrieved data (e.g., log it or display it)
-            Log.d("Database", "ID: " + userId + " Name: " + userName + " Email: " + userEmail);
+            Log.d("DatabaseManager", "ID: " + userId + " Name: " + userName);
         }
         cursor.close();
     }
@@ -70,6 +70,7 @@ public class DatabaseManager {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String[] projection = {
+                "id", // Ensure to retrieve the ID column
                 "name",
                 "password",
         };
@@ -92,6 +93,11 @@ public class DatabaseManager {
 
             // check if username & pw match
             if(userName.equals(name) && userPassword.equals(password)){
+
+                // put id into login list (currently logged in)
+                int userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+                loginUser(userId);
+
                 cursor.close();
                 return true;
             }
@@ -136,6 +142,308 @@ public class DatabaseManager {
         // no matches found
         cursor.close();
         return true;
+    }
+
+    public void loginUser(long id) {
+        // open in write mode
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all rows in table
+        db.delete("login", null, null);
+
+        // put in new user
+        ContentValues values = new ContentValues();
+        values.put("id", id);
+
+        db.insert("login", null, values);
+    }
+
+    // logout user (only from database and not views !!! always reset to Login page when calling this method)
+    public void LogoutUser() {
+        // open in write mode
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all rows in table
+        db.delete("login", null, null);
+
+    }
+
+    // returns true if there is currently a user logged in
+    // allows for app to skip login page
+    public boolean IsLoggedIn(){
+        // check if login table is empty
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                "id"
+        };
+
+        Cursor cursor = db.query(
+                "login",
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        if(cursor.getCount() == 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
+    public int GetCurrentUserID(){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                "id"
+        };
+
+        Cursor cursor = db.query(
+                "login",
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        if (cursor.moveToFirst()) {
+            int userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+            cursor.close();
+            return userId;
+        }
+
+        // no user currently logged in
+        cursor.close();
+        return -1;
+    }
+
+    public String GetUsername(int ID){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                "id",
+                "name"
+        };
+
+        Cursor cursor = db.query(
+                "users",
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        while (cursor.moveToNext()) {
+
+            long userId = cursor.getLong(cursor.getColumnIndexOrThrow("id"));
+
+            // check id
+            if(userId == ID){
+                String userName = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+                cursor.close();
+                return userName;
+            }
+        }
+
+        // no user found
+        cursor.close();
+        return "No Match";
+    }
+
+    public Bitmap GetUserProfilePicture(int ID){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                "id",
+                "profile_picture"
+        };
+
+        Cursor cursor = db.query(
+                "users",
+                projection,
+                "id = ?",
+                new String[]{String.valueOf(ID)},
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null && cursor.moveToFirst()) {
+            byte[] blob = cursor.getBlob(cursor.getColumnIndexOrThrow("profile_picture"));
+            cursor.close();
+
+            if (blob != null) {
+                return BitmapFactory.decodeByteArray(blob, 0, blob.length);
+            }
+        }
+
+        // If no profile picture is found, or in case of any issue, return a default/empty Bitmap
+        if (cursor != null) {
+            cursor.close();
+        }
+        Bitmap emptyBitmap = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(emptyBitmap);
+        canvas.drawColor(Color.WHITE); // or use Color.TRANSPARENT for a transparent background
+        return emptyBitmap;
+    }
+
+    public Integer GetUserRecipesTried(int ID){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                "id",
+                "challenge_completed"
+        };
+
+        Cursor cursor = db.query(
+                "users",
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        while (cursor.moveToNext()) {
+
+            long userId = cursor.getLong(cursor.getColumnIndexOrThrow("id"));
+
+            // check id
+            if(userId == ID){
+                Integer recipesTried = Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("challenge_completed")));
+                cursor.close();
+                return recipesTried;
+            }
+        }
+
+        // no recipes tried found
+        cursor.close();
+        return 999999999;
+    }
+
+    public boolean verifyPassword(String currentPassword) {
+        Cursor cursor = null;
+        try {
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+            cursor = db.rawQuery("SELECT id FROM users WHERE password = ?", new String[]{currentPassword});
+            return cursor != null && cursor.moveToFirst();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    public boolean updateUsername(String newUsername) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", newUsername);
+
+        int rowsAffected = db.update("users", values, "id = ?", new String[]{String.valueOf(GetCurrentUserID())});
+        return rowsAffected > 0;
+    }
+
+    public boolean updatePassword(String newPassword) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("password", newPassword);
+
+        int rowsAffected = db.update("users", values, "id = ?", new String[]{String.valueOf(GetCurrentUserID())});
+        return rowsAffected > 0;
+    }
+
+    public void updateProfilePicture(Bitmap newProfilePicture) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        // Convert Bitmap to byte array
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        newProfilePicture.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+        // Put byte array into ContentValues
+        values.put("profile_picture", byteArray);
+
+        // Update the user's profile picture in the database
+        int rowsAffected = db.update("users", values, "id = ?", new String[]{String.valueOf(GetCurrentUserID())});
+
+
+    }
+
+    public String GetChallengeSteps(int recipeId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                "recipe_id",
+                "recipe_steps"
+        };
+
+        Cursor cursor = db.query(
+                "recipes",
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        while (cursor.moveToNext()) {
+
+            Integer current_recipeID = cursor.getInt(cursor.getColumnIndexOrThrow("recipe_id"));
+            // check id
+            if(current_recipeID == recipeId){
+                String steps = cursor.getString(cursor.getColumnIndexOrThrow("recipe_steps"));
+                cursor.close();
+                return steps;
+            }
+        }
+
+        // no user found
+        cursor.close();
+        return "No Match";
+    }
+
+    public void AddChallengeCompleted(Integer user_id) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // first, we need to get the current challenge completed value
+        String[] projection = {"challenge_completed"};
+
+        Cursor cursor = db.query(
+                "users",
+                new String[] {"challenge_completed"},
+                "id = ?",
+                new String[] {String.valueOf(user_id)},
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToFirst();
+        int challenge_completed = cursor.getInt(cursor.getColumnIndexOrThrow("challenge_completed"));
+
+        // increment challenge completed value by 1
+        challenge_completed++;
+        Log.d("MyApp", Integer.toString(challenge_completed));
+
+        // New value for one column
+        ContentValues values = new ContentValues();
+        values.put("challenge_completed", challenge_completed);
+
+        // update challenge completed value
+        db.update("users",values, "id = ?", new String[] {String.valueOf(user_id)});
+
     }
 
     // Add for recipes, challenges, and achievements tables as needed.

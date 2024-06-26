@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="profileButton" type="id" />
+    <item name="returnButton" type="id" />
+    <item name="spinnerStates" type="id" />
+    <item name="searchButton" type="id" />
+    <item name="listViewRecipes" type="id" />
+    <item name="scroll" type="id" />
+    <item name="collected_achievements" type="id" />
+    <item name="label_collected_achievements" type="id" />
+    <item name="achievements_stat" type="id" />
+    <item name="stat_recipes_tried" type="id" />
+    <item name="user_statistics_number" type="id" />
+    <item name="achievements_earned" type="id" />
+    <item name="recipes_tried" type="id" />
+    <item name="user_statistics_string" type="id" />
+    <item name="user_statistics" type="id" />
+    <item name="user_avatar" type="id" />
+    <item name="navigation_bar" type="id" />
+    <item name="user_info" type="id" />
+    <item name="btn_edit_profile" type="id" />
+    <item name="btn_return_home" type="id" />
+    <item name="addToCookbookButton" type="id" />
+    <item name="startChallengeButton" type="id" />
+</resources>
