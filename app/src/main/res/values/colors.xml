@@ -10,4 +10,6 @@
     <color name="button_background_color">#F0F0F0</color>
     <color name="button_border_color">#ff0000</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="Primary">#FFC107</color>
+    <color name="PrimaryDark">#AF6A03</color>
 </resources>

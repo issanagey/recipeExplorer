@@ -25,6 +25,7 @@
         </activity>
 
         <activity android:name=".activity.RecipeActivity" />
+        <activity android:name=".activity.RecipeViewActivity" />
         <activity android:name=".activity.ChallengeActivity" />
         <activity android:name=".activity.ProfileActivity" />
         <activity android:name=".activity.ProfileActivity$EditProfileActivity" />

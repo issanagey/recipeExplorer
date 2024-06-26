@@ -97,53 +97,18 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
 
-        // Set onClickListener for Add to Cookbook Button
-        Button addToCookbookButton = findViewById(R.id.addToCookbookButton);
-        addToCookbookButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String selectedState = spinnerStates.getSelectedItem().toString();
-                // Implement logic to add current state's ID and user ID to the cookbook table
-                // Example: dbHelper.addToCookbook(selectedState, userId);
-                // Replace `userId` with the actual user ID from your session or database.
-            }
-        });
-
-        // Set onClickListener for Start Challenge Button
-        Button startChallengeButton = findViewById(R.id.startChallengeButton);
-        startChallengeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Check for selected item in the ListView
-                int position = listViewRecipes.getCheckedItemPosition();
-                if (position != AdapterView.INVALID_POSITION) {
-                    // Get the selected recipe from the adapter
-                    Recipe selectedRecipe = recipeAdapter.getItem(position);
-
-                    // Prepare intent to start ChallengeActivity
-                    Intent intent = new Intent(RecipeActivity.this, ChallengeActivity.class);
-
-                    // Pass recipe details to ChallengeActivity
-                    intent.putExtra("recipe_id", selectedRecipe.getId());
-                    intent.putExtra("recipe_title", selectedRecipe.getTitle());
-                    intent.putExtra("recipe_steps", selectedRecipe.getSteps());
-
-                    // Start the activity
-                    startActivity(intent);
-                } else {
-                    // Handle the case where no item is selected
-                    Toast.makeText(RecipeActivity.this, "Please select a recipe", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        // Set item click listener for ListView to enable selection
         listViewRecipes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Toggle selection on click
-                listViewRecipes.setItemChecked(position, true);
-                recipeAdapter.setSelectedPosition(position); // Update selected position in adapter
+                // Get the selected recipe from the adapter
+                Recipe selectedRecipe = recipeAdapter.getItem(position);
+
+                // Prepare intent to start RecipeViewActivity
+                Intent intent = new Intent(RecipeActivity.this, RecipeViewActivity.class);
+                intent.putExtra("RECIPE_ID", selectedRecipe.getId()); // Use "RECIPE_ID" here
+
+                // Start the activity
+                startActivity(intent);
             }
         });
     }

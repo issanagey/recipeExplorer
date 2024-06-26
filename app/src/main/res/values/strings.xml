@@ -10,4 +10,9 @@
     <string name="box_clicked">Box Clicked</string>
     <string name="add_to_cookbook">Add to Cookbook</string>
     <string name="start_challenge">Start Challenge</string>
+    <string name="profile_button">profile_button</string>
+    <string name="back_button">back_button</string>
+    <string name="recipe_name">Recipe Name</string>
+    <string name="recipe_state">Recipe State</string>
+    <string name="recipe_description">Recipe Description</string>
 </resources>
