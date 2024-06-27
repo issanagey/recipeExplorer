@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/recipe_views">
 
     <!-- Top Tab Part -->
     <RelativeLayout
@@ -33,22 +34,12 @@
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
-    <!-- Image View -->
-    <ImageView
-        android:id="@+id/recipeImageView"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/placeholder_image"
-        android:layout_below="@id/topTabLayout" />
-
     <!-- Scrollable Description -->
     <ScrollView
         android:id="@+id/descriptionScrollView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_below="@id/recipeImageView"
+        android:layout_height="match_parent"
+        android:layout_below="@id/topTabLayout"
         android:layout_above="@id/bottomTabLayout">
 
         <LinearLayout
@@ -70,6 +61,15 @@
             <!-- Recipe State -->
             <TextView
                 android:id="@+id/recipeState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/recipe_state"
+                android:textSize="18sp"
+                android:paddingBottom="8dp"/>
+
+            <!-- Recipe Steps -->
+            <TextView
+                android:id="@+id/recipeSteps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/recipe_state"

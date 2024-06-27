@@ -22,6 +22,7 @@ public class RecipeViewActivity extends AppCompatActivity {
     private ImageView recipeImageView;
     private TextView recipeName;
     private TextView recipeState;
+    private TextView recipeSteps;
     private TextView recipeDescription;
     private Button addToCookbookButton;
     private Button startChallengeButton;
@@ -35,9 +36,9 @@ public class RecipeViewActivity extends AppCompatActivity {
         // Initialize views
         backButton = findViewById(R.id.backButton);
         profileButton = findViewById(R.id.profileButton);
-        recipeImageView = findViewById(R.id.recipeImageView);
         recipeName = findViewById(R.id.recipeName);
         recipeState = findViewById(R.id.recipeState);
+        recipeSteps = findViewById(R.id.recipeSteps);
         recipeDescription = findViewById(R.id.recipeDescription);
         addToCookbookButton = findViewById(R.id.addToCookbookButton);
         startChallengeButton = findViewById(R.id.startChallengeButton);
@@ -79,7 +80,10 @@ public class RecipeViewActivity extends AppCompatActivity {
             // Populate UI with recipe details
             recipeState.setText(recipe.getState());
             recipeName.setText(recipe.getTitle());
-            recipeDescription.setText(recipe.getDescription());
+            recipeSteps.setText(recipe.getSteps());
+            String recipeSteps = recipe.getDescription().replace("; ","\n\n");
+            recipeDescription.setText(recipeSteps);
+
         } else {
             // Handle case where recipe is not found or user doesn't have access
             Log.e("RecipeViewActivity", "Recipe not found in database for ID: " + recipeId);
