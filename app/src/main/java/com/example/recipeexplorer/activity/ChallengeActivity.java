@@ -19,7 +19,7 @@ public class ChallengeActivity extends AppCompatActivity {
 
     private LinearLayout listView;
     private Button completeButton;
-    private int stepsCompletedCount = 0;
+    private int stepsCompletedCount = -1;
     private String[] listOfSteps;
 
     @Override
@@ -56,7 +56,7 @@ public class ChallengeActivity extends AppCompatActivity {
         displayAllSteps();
 
         // Highlight the first step initially
-        updateStepHighlight(0);
+        updateStepHighlight(stepsCompletedCount);
 
         // Set onClickListener for Complete Button
         completeButton.setOnClickListener(new View.OnClickListener() {
