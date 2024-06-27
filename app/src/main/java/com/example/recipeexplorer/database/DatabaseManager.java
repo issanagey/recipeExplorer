@@ -11,7 +11,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.example.recipeexplorer.models.Recipe;
+
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseManager {
     private final DatabaseHelper dbHelper;
@@ -259,7 +263,7 @@ public class DatabaseManager {
         return "No Match";
     }
 
-    public Bitmap GetUserProfilePicture(int ID){
+    public Bitmap GetUserProfilePicture(int ID) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String[] projection = {
@@ -283,6 +287,12 @@ public class DatabaseManager {
 
             if (blob != null) {
                 return BitmapFactory.decodeByteArray(blob, 0, blob.length);
+            } else {
+                // If the user is found but the profile picture is null, return a black bitmap
+                Bitmap blackBitmap = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(blackBitmap);
+                canvas.drawColor(Color.BLACK); // Set the bitmap color to black
+                return blackBitmap;
             }
         }
 
@@ -295,6 +305,7 @@ public class DatabaseManager {
         canvas.drawColor(Color.WHITE); // or use Color.TRANSPARENT for a transparent background
         return emptyBitmap;
     }
+
 
     public Integer GetUserRecipesTried(int ID){
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -530,4 +541,72 @@ public class DatabaseManager {
         return steps;
     }
 
+    public String GetRecipeName(int recipeId){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                "recipe_id",
+                "recipe_name"
+        };
+
+        String selection = "recipe_id = ?";
+        String[] selectionArgs = { String.valueOf(recipeId) };
+
+        Cursor cursor = db.query(
+                "recipes",
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        String name = null;
+
+        if (cursor != null && cursor.moveToFirst()) {
+            name = cursor.getString(cursor.getColumnIndexOrThrow("recipe_name"));
+            cursor.close();
+        }
+
+        return name;
+    }
+
+    public List<Recipe> GetRecipeListFromCookBook(int user_id) {
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        List<Recipe> recipes = new ArrayList<>();
+
+
+        // get cursor of recipe id
+        Cursor cursor = db.query("cookbooks", new String[]{"recipe_id"}, "user_id=?", new String[]{String.valueOf(user_id)}, null, null, null, null);
+
+        // loop through cursor and add recipe to list
+        while (cursor.moveToNext()){
+            recipes.add(GetRecipeByID(cursor.getInt(cursor.getColumnIndexOrThrow("recipe_id"))));
+        }
+
+        cursor.close();
+
+        return recipes;
+    }
+
+    public Recipe GetRecipeByID(int recipe_id) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query("recipes", null, "recipe_id=?", new String[]{String.valueOf(recipe_id)}, null, null, null, null);
+
+        cursor.moveToFirst();
+        int id = cursor.getInt(cursor.getColumnIndexOrThrow("recipe_id"));
+        String recipeState = cursor.getString(cursor.getColumnIndexOrThrow("recipe_state"));
+        String title = cursor.getString(cursor.getColumnIndexOrThrow("recipe_name"));
+        String description = cursor.getString(cursor.getColumnIndexOrThrow("recipe_description"));
+        String steps = cursor.getString(cursor.getColumnIndexOrThrow("recipe_steps"));
+        byte[] image = cursor.getBlob(cursor.getColumnIndexOrThrow("recipe_image"));
+
+        Recipe recipe = new Recipe(id, recipeState, title, description, steps, image);
+        cursor.close();
+
+        return recipe;
+    }
 }
