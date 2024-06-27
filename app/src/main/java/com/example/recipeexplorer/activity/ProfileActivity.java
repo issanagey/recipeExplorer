@@ -38,6 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
                 startActivityForResult(intent, EDIT_PROFILE_REQUEST);
+
             }
         });
     }
@@ -139,7 +140,8 @@ public class ProfileActivity extends AppCompatActivity {
             setContentView(R.layout.editprofile);
 
             DatabaseManager dbm = new DatabaseManager(getApplicationContext());
-
+            ImageView myImage = findViewById(R.id.edit_user_avatar);
+            myImage.setImageBitmap(dbm.GetUserProfilePicture(dbm.GetCurrentUserID()));
             Button changePictureButton = findViewById(R.id.btn_change_picture);
             changePictureButton.setOnClickListener(v -> onChangePictureClicked());
 

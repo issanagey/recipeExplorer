@@ -1,6 +1,9 @@
 package com.example.recipeexplorer;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -8,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import java.io.ByteArrayOutputStream;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.recipeexplorer.activity.ProfileActivity;
@@ -135,7 +138,11 @@ public class MainActivity extends AppCompatActivity {
                 // name check
                 if (dbm.CreateAccountVerification(name)) {
                     // create account
-                    dbm.addUser(name, pw, "".getBytes());
+                    Bitmap whiteBitmap = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(whiteBitmap);
+                    canvas.drawColor(Color.WHITE); // Set the bitmap color to black
+
+                    dbm.addUser(name, pw, convertBitmapToByteArray(whiteBitmap));
                     Snackbar.make(v, "Account Created", Snackbar.LENGTH_SHORT).show();
 
                     // back to login page
@@ -149,6 +156,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public byte[] convertBitmapToByteArray(Bitmap bitmap) {
+        // Initialize a ByteArrayOutputStream
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        // Compress the bitmap into the ByteArrayOutputStream
+        // The format can be changed to Bitmap.CompressFormat.PNG if you prefer PNG format
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+
+        // Convert the ByteArrayOutputStream to a byte array
+        return byteArrayOutputStream.toByteArray();
+    }
     // Main page
     public void Main(View view) {
         setContentView(R.layout.activity_main);
