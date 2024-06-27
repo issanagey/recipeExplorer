@@ -15,4 +15,5 @@
     <string name="recipe_name">Recipe Name</string>
     <string name="recipe_state">Recipe State</string>
     <string name="recipe_description">Recipe Description</string>
+    <string name="recipe_steps">Recipe Steps</string>
 </resources>

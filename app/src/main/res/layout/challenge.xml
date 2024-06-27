@@ -6,6 +6,17 @@
     android:gravity="center_horizontal"
     android:background="@drawable/recipe_views">
 
+    <!-- Challenge Start Label -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Challenge Start!"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/PrimaryDark" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

@@ -56,7 +56,19 @@
                 android:text="@string/recipe_name"
                 android:textSize="32sp"
                 android:textStyle="bold"
-                android:paddingBottom="8dp"/>
+                android:paddingBottom="8dp"
+                android:textColor="@android:color/black"/>
+
+            <!-- Recipe State Label -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="State"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp"
+                android:textColor="@android:color/black"/>
 
             <!-- Recipe State -->
             <TextView
@@ -65,16 +77,19 @@
                 android:layout_height="wrap_content"
                 android:text="@string/recipe_state"
                 android:textSize="18sp"
-                android:paddingBottom="8dp"/>
+                android:paddingBottom="8dp"
+                android:textColor="@android:color/black"/>
 
-            <!-- Recipe Steps -->
+            <!-- Recipe Description Label -->
             <TextView
-                android:id="@+id/recipeSteps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/recipe_state"
+                android:text="Description"
                 android:textSize="18sp"
-                android:paddingBottom="8dp"/>
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp"
+                android:textColor="@android:color/black"/>
 
             <!-- Recipe Description -->
             <TextView
@@ -82,7 +97,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/recipe_description"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:textColor="@android:color/black"/>
+
+            <!-- Recipe Steps Label -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Steps"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp"
+                android:textColor="@android:color/black"/>
+
+            <!-- Recipe Steps -->
+            <TextView
+                android:id="@+id/recipeSteps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/recipe_steps"
+                android:textSize="18sp"
+                android:paddingBottom="8dp"
+                android:textColor="@android:color/black"/>
         </LinearLayout>
 
     </ScrollView>
