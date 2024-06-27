@@ -40,6 +40,74 @@ public class ProfileActivity extends AppCompatActivity {
         myImage = findViewById(R.id.user_avatar);
         myImage.setImageBitmap(dbm.GetUserProfilePicture(dbm.GetCurrentUserID()));
 
+        TextView userName = findViewById(R.id.user_name);
+        TextView recipesTried = findViewById(R.id.stat_recipes_tried);
+        TextView achievementEarned = findViewById(R.id.achievements_stat);
+
+        userName.setText(dbm.GetUsername(dbm.GetCurrentUserID()));
+        Integer Num = dbm.GetUserRecipesTried(dbm.GetCurrentUserID());
+        recipesTried.setText(Integer.toString(Num));
+
+        // achievements
+        LinearLayout achievements = findViewById(R.id.collected_achievements);
+
+        if (Num > 6) {
+            achievementEarned.setText("3");
+
+            TextView textView = new TextView(this);
+            textView.setText("Advanced");
+            textView.setTextSize(20);
+            textView.setPadding(10, 10, 10, 10);
+
+            // Set background color (initially all dim)
+            textView.setBackgroundColor(Color.LTGRAY);
+            achievements.addView(textView);
+
+        }
+
+        if (Num > 3) {
+            achievementEarned.setText("2");
+
+            TextView textView = new TextView(this);
+            textView.setText("Intermediate");
+            textView.setTextSize(20);
+            textView.setPadding(10, 10, 10, 10);
+
+            // Set background color (initially all dim)
+            textView.setBackgroundColor(Color.LTGRAY);
+            achievements.addView(textView);
+
+        }
+
+        if (Num > 0) {
+            achievementEarned.setText("1");
+
+            TextView textView = new TextView(this);
+            textView.setText("Beginer");
+            textView.setTextSize(20);
+            textView.setPadding(10, 10, 10, 10);
+
+            // Set background color (initially all dim)
+            textView.setBackgroundColor(Color.LTGRAY);
+            achievements.addView(textView);
+
+        }
+
+        else {
+            achievementEarned.setText("0");
+
+            TextView textView = new TextView(this);
+            textView.setText("Noob");
+            textView.setTextSize(20);
+            textView.setPadding(10, 10, 10, 10);
+
+            // Set background color (initially all dim)
+            textView.setBackgroundColor(Color.LTGRAY);
+            achievements.addView(textView);
+
+        }
+        myImage.setImageBitmap(dbm.GetUserProfilePicture(dbm.GetCurrentUserID()));
+
          userName = findViewById(R.id.user_name);
          recipesTried = findViewById(R.id.stat_recipes_tried);
          achievementEarned = findViewById(R.id.achievements_stat);
@@ -275,5 +343,4 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 }
-
 
