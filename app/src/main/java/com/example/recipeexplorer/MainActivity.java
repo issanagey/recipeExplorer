@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.recipeexplorer.activity.ProfileActivity;
 import com.example.recipeexplorer.activity.RecipeActivity;
+import com.example.recipeexplorer.activity.CookbookActivity;
 import com.example.recipeexplorer.database.DatabaseManager;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -174,6 +175,16 @@ public class MainActivity extends AppCompatActivity {
         newGameButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, RecipeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // get cookbook button reference
+        Button cookbookButton = findViewById(R.id.cookBookButton);
+
+        cookbookButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CookbookActivity.class);
                 startActivity(intent);
             }
         });

@@ -1,5 +1,7 @@
 package com.example.recipeexplorer.models;
 
+import android.util.Log;
+
 public class Recipe {
     private int id;
     private final String state;
@@ -26,6 +28,9 @@ public class Recipe {
         this.description = description;
         this.steps = null;  // Set default values or handle null as appropriate
         this.image = null;  // Set default values or handle null as appropriate
+
+        Log.d("DatabaseManager", "Added to cookbooks: " + id);
+
     }
 
     // Getters

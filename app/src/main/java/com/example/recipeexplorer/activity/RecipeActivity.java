@@ -97,6 +97,7 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
 
+        // set on click for view recipe
         listViewRecipes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -24,6 +24,13 @@
         android:onClick="newGame"/>
 
     <Button
+        android:id="@+id/cookBookButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cook Book"
+        android:onClick="cookBook"/>
+
+    <Button
         android:id="@+id/profileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
