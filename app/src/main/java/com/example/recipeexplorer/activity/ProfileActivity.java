@@ -40,9 +40,9 @@ public class ProfileActivity extends AppCompatActivity {
         myImage = findViewById(R.id.user_avatar);
         myImage.setImageBitmap(dbm.GetUserProfilePicture(dbm.GetCurrentUserID()));
 
-        TextView userName = findViewById(R.id.user_name);
-        TextView recipesTried = findViewById(R.id.stat_recipes_tried);
-        TextView achievementEarned = findViewById(R.id.achievements_stat);
+         userName = findViewById(R.id.user_name);
+         recipesTried = findViewById(R.id.stat_recipes_tried);
+         achievementEarned = findViewById(R.id.achievements_stat);
 
         userName = findViewById(R.id.user_name);
         recipesTried = findViewById(R.id.stat_recipes_tried);
@@ -73,6 +73,9 @@ public class ProfileActivity extends AppCompatActivity {
         userName.setText(dbm.GetUsername(dbm.GetCurrentUserID()));
         Integer Num = dbm.GetUserRecipesTried(dbm.GetCurrentUserID());
         recipesTried.setText(Integer.toString(Num));
+
+        // achievements earned
+        TextView achievementEarned = findViewById(R.id.achievements_stat);
 
         // achievements
         LinearLayout achievements = findViewById(R.id.collected_achievements);
