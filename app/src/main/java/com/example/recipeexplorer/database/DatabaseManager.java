@@ -505,7 +505,6 @@ public class DatabaseManager {
         ContentValues values = new ContentValues();
         values.put("user_id", userId);
         values.put("recipe_id", recipeId);
-        values.put("completed", 0);
 
         long newRowId = db.insert("cookbooks", null, values);
     }
