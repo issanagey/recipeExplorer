@@ -23,18 +23,43 @@ import java.io.IOException;
 
 public class ProfileActivity extends AppCompatActivity {
     private ImageView myImage;
-    private Uri imageUri;
-    private static final int PICK_IMAGE_REQUEST = 1;
+    private TextView userName;
+    private TextView recipesTried;
+    private TextView achievementEarned;
+    private static final int EDIT_PROFILE_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile);
+
         DatabaseManager dbm = new DatabaseManager(getApplicationContext());
         myImage = findViewById(R.id.user_avatar);
-        TextView userName = findViewById(R.id.user_name);
-        TextView recipesTried = findViewById(R.id.stat_recipes_tried);
-        TextView achievementEarned = findViewById(R.id.achievements_stat);
+        userName = findViewById(R.id.user_name);
+        recipesTried = findViewById(R.id.stat_recipes_tried);
+        achievementEarned = findViewById(R.id.achievements_stat);
+
+        updateProfileData();
+
+        Button editProfileButton = findViewById(R.id.btn_edit_profile);
+        editProfileButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+                startActivityForResult(intent, EDIT_PROFILE_REQUEST);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_PROFILE_REQUEST && resultCode == RESULT_OK) {
+            updateProfileData();
+        }
+    }
+
+    private void updateProfileData() {
+        DatabaseManager dbm = new DatabaseManager(getApplicationContext());
         myImage.setImageBitmap(dbm.GetUserProfilePicture(dbm.GetCurrentUserID()));
         userName.setText(dbm.GetUsername(dbm.GetCurrentUserID()));
         Integer Num = dbm.GetUserRecipesTried(dbm.GetCurrentUserID());
@@ -48,17 +73,9 @@ public class ProfileActivity extends AppCompatActivity {
         } else {
             achievementEarned.setText("3");
         }
-
-        Button editProfileButton = findViewById(R.id.btn_edit_profile);
-        editProfileButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
-    // Edit Profile Activity
+    // Inner class for EditProfileActivity
     public static class EditProfileActivity extends AppCompatActivity {
         private ImageView myImage;
         private Uri imageUri;
@@ -68,11 +85,11 @@ public class ProfileActivity extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.editprofile);
+
             DatabaseManager dbm = new DatabaseManager(getApplicationContext());
             myImage = findViewById(R.id.edit_user_avatar);
             myImage.setImageBitmap(dbm.GetUserProfilePicture(dbm.GetCurrentUserID()));
 
-            // Set onClickListeners for buttons
             Button changePictureButton = findViewById(R.id.btn_change_picture);
             changePictureButton.setOnClickListener(v -> onChangePictureClicked());
 
@@ -90,6 +107,7 @@ public class ProfileActivity extends AppCompatActivity {
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
         }
 
+        @Override
         protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
             if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
@@ -170,21 +188,20 @@ public class ProfileActivity extends AppCompatActivity {
             boolean updateSuccess = false;
 
             if (usernameChanged) {
-                updateSuccess = dbm.updateUsername(newUsername) || updateSuccess;
+                updateSuccess = dbm.updateUsername(newUsername);
             }
 
             if (passwordChanged) {
-                updateSuccess = dbm.updatePassword(newPassword) || updateSuccess;
+                updateSuccess = dbm.updatePassword(newPassword);
             }
 
             if (profilePictureChanged) {
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                 dbm.updateProfilePicture(bitmap);
-                updateSuccess = true;  // Assuming the profile picture update always succeeds
             }
 
             if (updateSuccess) {
-                Snackbar.make(findViewById(android.R.id.content), "Profile updated successfully", Snackbar.LENGTH_SHORT).show();
+                setResult(RESULT_OK);
                 finish();  // Finish the activity and return to the profile view
             } else {
                 Snackbar.make(findViewById(android.R.id.content), "Failed to update profile", Snackbar.LENGTH_SHORT).show();
@@ -196,4 +213,5 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 }
+
 

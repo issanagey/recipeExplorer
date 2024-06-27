@@ -263,7 +263,7 @@ public class DatabaseManager {
         return "No Match";
     }
 
-    public Bitmap GetUserProfilePicture(int ID){
+    public Bitmap GetUserProfilePicture(int ID) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String[] projection = {
@@ -287,6 +287,12 @@ public class DatabaseManager {
 
             if (blob != null) {
                 return BitmapFactory.decodeByteArray(blob, 0, blob.length);
+            } else {
+                // If the user is found but the profile picture is null, return a black bitmap
+                Bitmap blackBitmap = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(blackBitmap);
+                canvas.drawColor(Color.BLACK); // Set the bitmap color to black
+                return blackBitmap;
             }
         }
 
@@ -299,6 +305,7 @@ public class DatabaseManager {
         canvas.drawColor(Color.WHITE); // or use Color.TRANSPARENT for a transparent background
         return emptyBitmap;
     }
+
 
     public Integer GetUserRecipesTried(int ID){
         SQLiteDatabase db = dbHelper.getReadableDatabase();
