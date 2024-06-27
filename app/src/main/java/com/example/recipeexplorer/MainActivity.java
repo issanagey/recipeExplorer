@@ -1,29 +1,35 @@
 package com.example.recipeexplorer;
 
-import android.graphics.Color;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.recipeexplorer.activity.ProfileActivity;
+import com.example.recipeexplorer.activity.RecipeActivity;
 import com.example.recipeexplorer.database.DatabaseManager;
 import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
+    private ImageView myImage;
+    private Uri imageUri;
+    private static final int PICK_IMAGE_REQUEST = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DatabaseManager dbm = new DatabaseManager(getApplicationContext());
 
         // cache login
-        if(dbm.IsLoggedIn()){
+        if (dbm.IsLoggedIn()) {
             Main(null);
-        }
-        else{
+        } else {
             // go to login page when starting app
             Login(null);
         }
@@ -31,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Login page
-    public void Login(View view){
+    public void Login(View view) {
         setContentView(R.layout.login);
 
         // input references
@@ -55,12 +61,9 @@ public class MainActivity extends AppCompatActivity {
                 DatabaseManager dbm = new DatabaseManager(getApplicationContext());
 
                 // login successful
-                if (dbm.LoginVerification(name,pw)) {
-                    setContentView(R.layout.activity_main);
-                    TextView textView = findViewById(R.id.user_name);
-                    textView.setText("Welcome " + dbm.GetUsername(dbm.GetCurrentUserID()));
-                }
-                else{
+                if (dbm.LoginVerification(name, pw)) {
+                    Main(null);
+                } else {
                     Snackbar.make(v, "Account does not exist or Password mismatched", Snackbar.LENGTH_SHORT).show();
                 }
             }
@@ -75,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
 
         Login(null);
     }
-
 
     // Create Account page
     public void CreateAccount(View view) {
@@ -132,14 +134,14 @@ public class MainActivity extends AppCompatActivity {
                 // name check
                 if (dbm.CreateAccountVerification(name)) {
                     // create account
-                    dbm.addUser(name ,pw, "".getBytes());
+                    dbm.addUser(name, pw, "".getBytes());
                     Snackbar.make(v, "Account Created", Snackbar.LENGTH_SHORT).show();
 
                     // back to login page
                     Login(null);
                 }
                 // name already exists
-                else{
+                else {
                     Snackbar.make(v, "Name already taken", Snackbar.LENGTH_SHORT).show();
                 }
             }
@@ -162,92 +164,18 @@ public class MainActivity extends AppCompatActivity {
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Profile(null);
-
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
             }
         });
-    }
+        // get new game button reference
+        Button newGameButton = findViewById(R.id.newGameButton);
 
-    // Profile page
-    public void Profile(View view) {
-        setContentView(R.layout.profile_placeholder);
-
-    }
-
-    // Challenge page
-//    public void Challenge(View view, int recipe_id){
-
-    public void Challenge(View view){
-        setContentView(R.layout.challenge);
-
-        DatabaseManager dbm = new DatabaseManager(getApplicationContext());
-
-        // get scroll view linear layout
-        LinearLayout listView = findViewById(R.id.steps_list);
-
-        // grab challenge steps from database
-        String steps = dbm.GetChallengeSteps(1); // this is just a placeholder for now, value should be passed from recipe view
-        String[] list_of_steps = steps.split("; ");
-
-        // color
-        Boolean even_odd = true;
-
-        // step count
-        int step_count = 1;
-
-        // create text view for each step
-        for (String step: list_of_steps) {
-
-            // create new text view
-            TextView textView = new TextView(this);
-
-            // set id, text, size, and padding
-            textView.setId(step_count);
-            step_count++;
-            textView.setText(step);
-            textView.setTextSize(30);
-            textView.setPadding(10, 10, 10, 10);
-
-            // alternate background color
-            if(even_odd)textView.setBackgroundColor(Color.GRAY);
-            else textView.setBackgroundColor(Color.DKGRAY);
-            even_odd = !even_odd;
-
-            // add step to scroll view
-            listView.addView(textView);
-        }
-
-        // get button reference
-        Button button = (Button) findViewById(R.id.complete_button);
-
-        // keep count on how many steps have been completed
-        final int[] steps_completed_count = {0};
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
+        newGameButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                steps_completed_count[0]++;
-
-                if(steps_completed_count[0] <= list_of_steps.length){
-                    if(steps_completed_count[0] % 2 == 0) findViewById(steps_completed_count[0]).setBackgroundColor(Color.GREEN);
-                    if(steps_completed_count[0] % 2 == 1) findViewById(steps_completed_count[0]).setBackgroundColor(Color.YELLOW);
-
-                    if(steps_completed_count[0] == list_of_steps.length){
-                        Button clickedButton = (Button) v;
-                        clickedButton.setText("Complete Challenge");
-                    }
-
-                }
-
-                else{
-                    dbm.AddChallengeCompleted(dbm.GetCurrentUserID());
-                    Main(null);
-                }
-
+                Intent intent = new Intent(MainActivity.this, RecipeActivity.class);
+                startActivity(intent);
             }
-
         });
-
     }
-
-
 }

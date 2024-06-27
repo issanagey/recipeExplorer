@@ -17,18 +17,18 @@
         android:textStyle="bold"/>
 
     <Button
-        android:id="@+id/profileButton"
+        android:id="@+id/newGameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Profile"
-        android:onClick="Profile"/>
+        android:text="New Game"
+        android:onClick="newGame"/>
 
     <Button
         android:id="@+id/profileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Profile"
-        android:onClick="Challenge"/>
+        android:onClick="Profile"/>
 
     <Button
         android:id="@+id/logoutButton"
