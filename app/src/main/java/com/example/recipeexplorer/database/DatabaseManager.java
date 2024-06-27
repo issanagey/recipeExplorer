@@ -505,9 +505,9 @@ public class DatabaseManager {
         ContentValues values = new ContentValues();
         values.put("user_id", userId);
         values.put("recipe_id", recipeId);
+        values.put("completed", 0);
 
         long newRowId = db.insert("cookbooks", null, values);
-        Log.d("DatabaseManager", "New row ID in cookbooks: " + newRowId);
     }
 
     public String getRecipeSteps(int recipeId) {
@@ -609,4 +609,63 @@ public class DatabaseManager {
 
         return recipe;
     }
+
+    // Function to return an array of recipe IDs based on user ID
+    public int[] getRecipeIdsByUserId(int userId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String query = "SELECT recipe_id FROM save WHERE user_id = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
+
+        int[] recipeIds = new int[cursor.getCount()];
+        int index = 0;
+
+        if (cursor.moveToFirst()) {
+            do {
+                recipeIds[index++] = cursor.getInt(cursor.getColumnIndex("recipe_id"));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return recipeIds;
+    }
+
+    public List<Recipe> getRecipesByState(String state) {
+        List<Recipe> recipes = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query("recipes", null, "recipe_state=?", new String[]{state}, null, null, null);
+
+        // recipes in coockbook should not be included
+        int[] idInCookbook = getRecipeIdsByUserId(GetCurrentUserID());
+
+        if (cursor.moveToFirst()) {
+            do {
+                try {
+                    // check conflict id
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow("recipe_id"));
+                    for (int i = 0; i < idInCookbook.length; i++) {
+                        if (idInCookbook[i] == id) {
+                            continue;
+                        }
+                    }
+
+                    String recipeState = cursor.getString(cursor.getColumnIndexOrThrow("recipe_state"));
+                    String title = cursor.getString(cursor.getColumnIndexOrThrow("recipe_name"));
+                    String description = cursor.getString(cursor.getColumnIndexOrThrow("recipe_description"));
+                    String steps = cursor.getString(cursor.getColumnIndexOrThrow("recipe_steps"));
+                    byte[] image = cursor.getBlob(cursor.getColumnIndexOrThrow("recipe_image"));
+
+                    Recipe recipe = new Recipe(id, recipeState, title, description, steps, image);
+                    recipes.add(recipe);
+                } catch (IllegalArgumentException e) {
+                    // Handle the case where a column name is not found
+                    e.printStackTrace();
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return recipes;
+    }
+
 }

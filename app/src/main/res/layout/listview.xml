@@ -7,4 +7,4 @@
     android:textSize="18sp"
     android:textColor="@android:color/black"
     android:padding="16dp"
-    android:background="?android:attr/selectableItemBackground"/>
+    android:background="#00000000"/>
