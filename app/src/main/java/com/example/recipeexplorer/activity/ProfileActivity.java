@@ -2,6 +2,7 @@ package com.example.recipeexplorer.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +36,14 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.profile);
 
         DatabaseManager dbm = new DatabaseManager(getApplicationContext());
+
         myImage = findViewById(R.id.user_avatar);
+        myImage.setImageBitmap(dbm.GetUserProfilePicture(dbm.GetCurrentUserID()));
+
+        TextView userName = findViewById(R.id.user_name);
+        TextView recipesTried = findViewById(R.id.stat_recipes_tried);
+        TextView achievementEarned = findViewById(R.id.achievements_stat);
+
         userName = findViewById(R.id.user_name);
         recipesTried = findViewById(R.id.stat_recipes_tried);
         achievementEarned = findViewById(R.id.achievements_stat);
@@ -64,14 +73,64 @@ public class ProfileActivity extends AppCompatActivity {
         userName.setText(dbm.GetUsername(dbm.GetCurrentUserID()));
         Integer Num = dbm.GetUserRecipesTried(dbm.GetCurrentUserID());
         recipesTried.setText(Integer.toString(Num));
-        if (Num <= 0) {
-            achievementEarned.setText("0");
-        } else if (Num <= 3) {
-            achievementEarned.setText("1");
-        } else if (Num <= 6) {
-            achievementEarned.setText("2");
-        } else {
+
+        // achievements
+        LinearLayout achievements = findViewById(R.id.collected_achievements);
+
+        if (Num > 6) {
             achievementEarned.setText("3");
+
+            TextView textView = new TextView(this);
+            textView.setText("Advanced");
+            textView.setTextSize(20);
+            textView.setPadding(10, 10, 10, 10);
+
+            // Set background color (initially all dim)
+            textView.setBackgroundColor(Color.LTGRAY);
+            achievements.addView(textView);
+
+        }
+
+        if (Num > 3) {
+            achievementEarned.setText("2");
+
+            TextView textView = new TextView(this);
+            textView.setText("Intermediate");
+            textView.setTextSize(20);
+            textView.setPadding(10, 10, 10, 10);
+
+            // Set background color (initially all dim)
+            textView.setBackgroundColor(Color.LTGRAY);
+            achievements.addView(textView);
+
+        }
+
+        if (Num > 0) {
+            achievementEarned.setText("1");
+
+            TextView textView = new TextView(this);
+            textView.setText("Beginer");
+            textView.setTextSize(20);
+            textView.setPadding(10, 10, 10, 10);
+
+            // Set background color (initially all dim)
+            textView.setBackgroundColor(Color.LTGRAY);
+            achievements.addView(textView);
+
+        }
+
+        else {
+            achievementEarned.setText("0");
+
+            TextView textView = new TextView(this);
+            textView.setText("Noob");
+            textView.setTextSize(20);
+            textView.setPadding(10, 10, 10, 10);
+
+            // Set background color (initially all dim)
+            textView.setBackgroundColor(Color.LTGRAY);
+            achievements.addView(textView);
+
         }
     }
 
